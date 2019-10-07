@@ -25,6 +25,8 @@ export class AppComponent {
     private _dataService: DataRoutingService
   ) {
     this.appId = "theme1";
+    this.appId = localStorage.getItem('theme') || this.appId;
+    this._dataService.setNavTitle(this.appId);
     this.showIcon = this.route.snapshot.paramMap.get("id") == null;
     this.oauthService.checkOauth().then((result: any) => {
       if (result.redirect) {
@@ -37,9 +39,6 @@ export class AppComponent {
   changeTheme($event) {
     this.appId = $event.theme;
     this._dataService.setNavTitle(this.appId);
-
-    // this.getNavTitleSubscription = this._dataService.getNavTitle()
-    // .subscribe((appId: string) => this.appId = appId);
   }
   title = "fos-client";
 }

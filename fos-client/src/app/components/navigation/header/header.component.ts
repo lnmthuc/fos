@@ -79,6 +79,7 @@ export class HeaderComponent implements OnInit {
   };
   switchTheme(appId: string) {
     this.appId = appId;
+    localStorage.setItem('theme', appId);
     this.change.emit({ theme: appId });
   }
   logOut() {

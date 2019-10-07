@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      //console.log('The dialog was closed');
     });
   }
 
@@ -79,6 +79,7 @@ export class HeaderComponent implements OnInit {
   };
   switchTheme(appId: string) {
     this.appId = appId;
+    localStorage.setItem('theme', appId);
     this.change.emit({ theme: appId });
   }
   logOut() {

@@ -17,6 +17,7 @@ import { EventFormService } from 'src/app/services/event-form/event-form.service
 import { GraphUser } from 'src/app/models/graph-user';
 import { OrderService } from 'src/app/services/order/order.service';
 import { environment } from './../../../environments/environment';
+import { EventDialogComponent } from '../event-dialog/event-dialog.component';
 @Component({
   selector: 'app-show-action',
   templateUrl: './show-action.component.html',
@@ -68,7 +69,7 @@ export class ShowActionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      //console.log('The dialog was closed');
     });
     this.isShowListAction = false;
   }
@@ -81,7 +82,20 @@ export class ShowActionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      //console.log('The dialog was closed');
+    });
+    this.isShowListAction = false;
+  }
+
+  cloneEvent($event) {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      maxHeight: '98vh',
+      width: '80%',
+      data: this.event
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
     });
     this.isShowListAction = false;
   }
@@ -98,7 +112,7 @@ export class ShowActionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      //console.log('The dialog was closed');
     });
     this.isShowListAction = false;
   }
@@ -171,7 +185,7 @@ export class ShowActionComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("The dialog was closed");
+      //console.log("The dialog was closed");
     });
     this.isShowListAction = false;
   }

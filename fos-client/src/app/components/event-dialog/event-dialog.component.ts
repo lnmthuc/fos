@@ -46,6 +46,9 @@ import { Promotion } from "src/app/models/promotion";
 import { EventPromotionService } from "src/app/services/event-promotion/event-promotion.service";
 import { environment } from "src/environments/environment";
 import { NoPromotionsNotificationComponent } from "./no-promotions-notification/no-promotions-notification.component";
+import { Restaurant } from "src/app/models/restaurant";
+import { OrderService } from "src/app/services/order/order.service";
+import { Order } from "src/app/models/order";
 import { DataRoutingService } from "src/app/data-routing.service";
 interface MoreInfo {
   restaurant: DeliveryInfos;
@@ -79,12 +82,14 @@ export interface userPickerGroup {
 })
 export class EventDialogComponent implements OnInit {
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+
   public ownerForm: FormGroup;
   public userInputPicker: any;
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<EventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: MoreInfo,
+    @Inject(MAT_DIALOG_DATA) public clonedEventInfo: Event,
     private fb: FormBuilder,
     private eventFormService: EventFormService,
     private eventPromotionService: EventPromotionService,
@@ -93,8 +98,9 @@ export class EventDialogComponent implements OnInit {
     private snackBar: MatSnackBar,
     overlayContainer: OverlayContainer,
     private userService: UserService,
+    private dataRouting: DataRoutingService,
     private customGroupService: CustomGroupService,
-    private dataRouting: DataRoutingService
+    private orderService: OrderService
   ) {
     this.ownerForm = new FormGroup({
       title: new FormControl("", [Validators.required]),
@@ -172,7 +178,7 @@ export class EventDialogComponent implements OnInit {
   listPickedUser: userPicker[];
   groups: CustomGroup[] = [];
   selectedGroup: string;
-  promotions: Promotion[];
+  promotions: Promotion[] = [];
 
   visible = true;
   selectable = true;
@@ -203,67 +209,7 @@ export class EventDialogComponent implements OnInit {
 
   ngOnInit() {
     var self = this;
-    self.ownerForm.get("MaximumBudget").setValue(0);
-    self.ownerForm.get("EventType").setValue("Open");
-
-    this.checkDatetimeValidation();
-    //get currentUser
-    self.loading = true;
-    self.eventFormService
-      .getCurrentUser()
-      .toPromise()
-      .then(value => {
-        self.createdUser = { id: value.Data.Id };
-        var dataSourceTemp: userPicker = {
-          Name: value.Data.DisplayName,
-          Email: value.Data.Mail,
-          Img: "",
-          Id: value.Data.Id,
-          IsGroup: 0
-        };
-
-        console.log("curentuser", dataSourceTemp);
-        self.ownerForm.get("userInputHost").setValue(dataSourceTemp);
-
-        self.eventUsers.push({
-          Name: dataSourceTemp.Name,
-          Email: dataSourceTemp.Email,
-          Img: "",
-          Id: dataSourceTemp.Id,
-          IsGroup: dataSourceTemp.IsGroup,
-          OrderStatus: "Not Order"
-        });
-        self.table.renderRows();
-        self.loading = false;
-      });
-
-    self.ownerForm.get("EventType").setValue("Open");
-    self.ownerForm.get("userInput").setValue(self.data.restaurant);
-    self.ownerForm
-      .get("userInput")
-      .valueChanges.pipe(
-        debounceTime(300),
-        tap(() => (self.isLoading = true)),
-        switchMap(value =>
-          self.restaurantService
-            .SearchRestaurantName(value, 4, self.data.idService, 217)
-            .pipe(finalize(() => (self.isLoading = true)))
-        )
-      )
-      .subscribe(data =>
-        self.restaurantService
-          .getRestaurants(data.Data, self.data.idService, 217)
-          .then(result => {
-            self.restaurant = result;
-            self.isLoading = false;
-            self.fetchAllPromotions();
-          })
-      );
-    this.userService.getCurrentUser().then(user => {
-      this.customGroupService.getAllGroup(user.Id).then(allGroup => {
-        this.groups = allGroup;
-      });
-    });
+    this.SetClonedEventData(this.clonedEventInfo, self);
   }
 
   selectGroup($event) {
@@ -290,15 +236,15 @@ export class EventDialogComponent implements OnInit {
   }
 
   // public OnCancel = () => {
-  //   console.log('click cancel');
+  //   //console.log('click cancel');
   //   if (this.ownerForm.valid && this.eventUsers.length > 0) {
-  //     console.log('pass');
+  //     //console.log('pass');
   //   }
   // };
 
   public CreateOwner = ownerFormValue => {
     if (this.ownerForm.valid) {
-      console.log("pass");
+      //console.log("pass");
     }
   };
   OnNoClick(): void {
@@ -306,7 +252,7 @@ export class EventDialogComponent implements OnInit {
   }
 
   DeleteUserInTable(name: string): void {
-    console.log("xoa ", name);
+    //console.log("xoa ", name);
     for (var j = 0; j < this.eventUsers.length; j++) {
       if (name == this.eventUsers[j].Name) {
         this.eventUsers.splice(j, 1);
@@ -319,16 +265,16 @@ export class EventDialogComponent implements OnInit {
 
   AddUserToTable(): void {
     var self = this;
-    console.log("Nhan add card");
+    //console.log("Nhan add card");
 
-    console.log(self.userSelect);
+    //console.log(self.userSelect);
 
     var choosingUser = self.ownerForm.get("userInputPicker").value;
 
     if (!choosingUser.Email) {
       return;
     }
-    console.log("choose User", choosingUser);
+    //console.log("choose User", choosingUser);
     var flag = false;
     self.eventUsers.forEach(element => {
       if (element.Name === choosingUser.Name) {
@@ -407,25 +353,25 @@ export class EventDialogComponent implements OnInit {
       this.toStandardDate(this.ownerForm.get("eventDate").value) +
       "T" +
       this.ownerForm.get("eventTime").value;
-    console.log("get eventDate: ", eventDate);
+    //console.log("get eventDate: ", eventDate);
 
     var dateTimeToClose =
       this.toStandardDate(this.ownerForm.get("closeDate").value) +
       "T" +
       this.ownerForm.get("closeTime").value;
-    console.log("get dateTimeToClose: ", dateTimeToClose);
+    //console.log("get dateTimeToClose: ", dateTimeToClose);
 
     var dateToReminder = this.ownerForm.get("remindDate").value
       ? this.toStandardDate(this.ownerForm.get("remindDate").value) +
         "T" +
         this.ownerForm.get("remindTime").value
       : "";
-    console.log("get dateToReminder: ", dateToReminder);
+    //console.log("get dateToReminder: ", dateToReminder);
 
     Promise.all(promises).then(function() {
-      console.log("final", jsonParticipants);
+      //console.log("final", jsonParticipants);
       var myJSON = JSON.stringify(jsonParticipants);
-      console.log("final", myJSON);
+      //console.log("final", myJSON);
 
       var eventListitem: Event = {
         Name: self.ownerForm.get("title").value,
@@ -438,7 +384,9 @@ export class EventDialogComponent implements OnInit {
         Participants: numberParticipant.toString(),
         Category: self.ownerForm.get("userInput").value.Categories,
         RestaurantId: self.ownerForm.get("userInput").value.RestaurantId,
-        ServiceId: self.data.idService.toString(),
+        ServiceId: self.clonedEventInfo
+          ? self.clonedEventInfo.ServiceId
+          : self.data.idService.toString(),
         DeliveryId: self.ownerForm.get("userInput").value.DeliveryId,
         CreatedBy: self.createdUser.id,
         HostId: self.ownerForm.get("userInputHost").value.Id,
@@ -455,11 +403,13 @@ export class EventDialogComponent implements OnInit {
         .toPromise()
         .then(newId => {
           if (newId.Success === true) {
-            console.log("new Id", newId.Data);
-            self.eventPromotionService.AddEventPromotion(
-              Number(newId.Data),
-              self.promotions
-            );
+            //console.log("new Id", newId.Data);
+            if (self.promotions) {
+              self.eventPromotionService.AddEventPromotion(
+                Number(newId.Data),
+                self.promotions
+              );
+            }
             self.SendEmail(newId.Data);
             self.toast("Added new event!", "Dismiss");
             self.dialogRef.close();
@@ -477,7 +427,7 @@ export class EventDialogComponent implements OnInit {
   }
   SendEmail(id: string) {
     this.restaurantService.setEmail(id);
-    console.log("Sent!");
+    //console.log("Sent!");
   }
   fetchAllPromotions() {
     this.eventPromotionService
@@ -497,7 +447,7 @@ export class EventDialogComponent implements OnInit {
           );
 
           dialogRef.afterClosed().subscribe(result => {
-            console.log("The dialog was closed");
+            //console.log("The dialog was closed");
           });
         }
         // this.promotionChanged.emit(this.promotions);
@@ -508,7 +458,7 @@ export class EventDialogComponent implements OnInit {
   }
 
   public HasError = (controlName: string, errorName: string) => {
-    // console.log(controlName + ' ' +this.ownerForm.controls[controlName].hasError(errorName) + ' ' + errorName);
+    // //console.log(controlName + ' ' +this.ownerForm.controls[controlName].hasError(errorName) + ' ' + errorName);
     return this.ownerForm.controls[controlName].hasError(errorName);
   };
 
@@ -680,7 +630,7 @@ export class EventDialogComponent implements OnInit {
   }
 
   onDateTimeInputChange($event) {
-    console.log($event);
+    //console.log($event);
     this.checkDatetimeValidation();
   }
 
@@ -740,11 +690,11 @@ export class EventDialogComponent implements OnInit {
   }
 
   isValidEventClose(component: Component) {
-    console.log(component);
+    //console.log(component);
   }
   notifyMessage(eventHost: userPicker) {
     var self = this;
-    console.log("change picker", event);
+    //console.log("change picker", event);
     var newHost: userPicker[] = this.eventUsers.filter(
       u => u.Email === eventHost.Email
     );
@@ -757,9 +707,211 @@ export class EventDialogComponent implements OnInit {
         Name: eventHost.Name,
         OrderStatus: "Not ordered"
       };
-      this.eventUsers.push(Host);
+      this.pushUserToParticipants(Host);
       self.table.renderRows();
     }
+  }
+
+  SetClonedEventData(clonnedEventData: Event, self) {
+    //console.log(clonnedEventData);
+    self.ownerForm
+      .get("MaximumBudget")
+      .setValue(
+        clonnedEventData && clonnedEventData.MaximumBudget
+          ? clonnedEventData.MaximumBudget
+          : 0
+      );
+    self.ownerForm
+      .get("EventType")
+      .setValue(
+        clonnedEventData && clonnedEventData.EventType
+          ? clonnedEventData.EventType
+          : "Open"
+      );
+
+    //get currentUser
+    self.loading = true;
+    self.eventFormService
+      .getCurrentUser()
+      .toPromise()
+      .then(value => {
+        self.createdUser = { id: value.Data.Id };
+        var dataSourceTemp: userPicker = {
+          Name: value.Data.DisplayName,
+          Email: value.Data.Mail,
+          Img: "",
+          Id: value.Data.Id,
+          IsGroup: 0
+        };
+
+        //console.log("curentuser", dataSourceTemp);
+        self.ownerForm.get("userInputHost").setValue(dataSourceTemp);
+
+        const host: EventUser = {
+          Email: dataSourceTemp.Email,
+          Name: dataSourceTemp.Name,
+          OrderStatus: "Not Ordered",
+          Img: "",
+          IsGroup: dataSourceTemp.IsGroup,
+          Id: dataSourceTemp.Id
+        };
+        this.pushUserToParticipants(host);
+        self.table.renderRows();
+        self.loading = false;
+      });
+
+    const restaurant = new DeliveryInfos();
+    restaurant.Name =
+      clonnedEventData && clonnedEventData.Restaurant
+        ? clonnedEventData.Restaurant
+        : self.data.restaurant.Name;
+    restaurant.DeliveryId =
+      clonnedEventData && clonnedEventData.DeliveryId
+        ? clonnedEventData.DeliveryId
+        : self.data.restaurant.DeliveryId;
+    restaurant.Categories =
+      clonnedEventData && clonnedEventData.Category
+        ? clonnedEventData.Category
+        : self.data.restaurant.Categories;
+    restaurant.RestaurantId =
+      clonnedEventData && clonnedEventData.RestaurantId
+        ? clonnedEventData.RestaurantId
+        : self.data.restaurant.RestaurantId;
+
+    self.ownerForm
+      .get("userInput")
+      .setValue(
+        clonnedEventData && clonnedEventData.Restaurant
+          ? restaurant
+          : self.data.restaurant
+      );
+    self.ownerForm
+      .get("userInput")
+      .valueChanges.pipe(
+        debounceTime(300),
+        tap(() => (self.isLoading = true)),
+        switchMap(value =>
+          self.restaurantService
+            .SearchRestaurantName(
+              value,
+              4,
+              clonnedEventData && clonnedEventData.ServiceId
+                ? Number(clonnedEventData.ServiceId)
+                : self.data.idService,
+              217
+            )
+            .pipe(finalize(() => (self.isLoading = true)))
+        )
+      )
+      .subscribe(data =>
+        self.restaurantService
+          .getRestaurants(
+            data.Data,
+            clonnedEventData && clonnedEventData.ServiceId
+              ? Number(clonnedEventData.ServiceId)
+              : self.data.idService,
+            217
+          )
+          .then(result => {
+            self.restaurant = result;
+            self.isLoading = false;
+            self.fetchAllPromotions();
+          })
+      );
+    this.userService.getCurrentUser().then(user => {
+      this.customGroupService.getAllGroup(user.Id).then(allGroup => {
+        this.groups = allGroup;
+      });
+    });
+    this.SetParticipantList(clonnedEventData);
+    if (clonnedEventData) {
+      this.loadDateTimeClone(clonnedEventData);
+    }
+  }
+
+  SetParticipantList(clonnedEventData: Event) {
+    const participants: Array<GraphUser> = JSON.parse(
+      clonnedEventData.EventParticipantsJson
+    );
+    this.orderService
+      .GetOrdersByEventId(clonnedEventData.EventId)
+      .then((order: Array<Order>) => {
+        order.forEach(o => {
+          const userNotOrder: GraphUser[] = participants.filter(
+            p => p.Mail === o.Email
+          );
+          if (o.OrderStatus === 0) {
+            const UserNot: EventUser = {
+              Email: userNotOrder[0].Mail,
+              Name: userNotOrder[0].DisplayName,
+              OrderStatus: "Not Ordered",
+              Img: "",
+              IsGroup: 0,
+              Id: userNotOrder[0].Id
+            };
+            this.pushUserToParticipants(UserNot);
+          } else if (o.OrderStatus == 1) {
+            const UserNot: EventUser = {
+              Email: userNotOrder[0].Mail,
+              Name: userNotOrder[0].DisplayName,
+              OrderStatus: "Ordered",
+              Img: "",
+              IsGroup: 0,
+              Id: userNotOrder[0].Id
+            };
+            this.pushUserToParticipants(UserNot);
+          } else if (o.OrderStatus == 2) {
+            const UserNot: EventUser = {
+              Email: userNotOrder[0].Mail,
+              Name: userNotOrder[0].DisplayName,
+              OrderStatus: "Not Participant",
+              Img: "",
+              IsGroup: 0,
+              Id: userNotOrder[0].Id
+            };
+            this.pushUserToParticipants(UserNot);
+          }
+        });
+        this.table.renderRows();
+      });
+  }
+
+  pushUserToParticipants(user: EventUser) {
+    if (this.eventUsers.findIndex(_user => _user.Id === user.Id) === -1) {
+      this.eventUsers.push(user);
+    }
+  }
+
+  loadDateTimeClone(clonnedEventData: Event) {
+    var newCloseTime = new Date(clonnedEventData.CloseTime);
+    var closeTime = this.ToDateString(newCloseTime);
+    this.dateTimeToClose = closeTime;
+
+    //console.log(clonnedEventData.RemindTime);
+    if (clonnedEventData.RemindTime) {
+      var newRemindTime = new Date(clonnedEventData.RemindTime);
+      // var remindTime = this.ToDateString(newRemindTime);
+      // this._dateToReminder = remindTime;
+      this.ownerForm.controls["remindTime"].setValue(
+        moment(newRemindTime).format("HH:mm")
+      );
+      this.ownerForm.controls["remindDate"].setValue(new Date());
+    }
+
+    var newEventDate = new Date(clonnedEventData.EventDate);
+    this.ownerForm.controls["eventTime"].setValue(
+      moment(newEventDate).format("HH:mm")
+    );
+    this.ownerForm.controls["eventDate"].setValue(new Date());
+    this.ownerForm.controls["closeTime"].setValue(
+      moment(newCloseTime).format("HH:mm")
+    );
+    this.ownerForm.controls["closeDate"].setValue(new Date());
+
+    this.checkDatetimeValidation();
+
+    var eventTime = this.ToDateString(newEventDate);
+    this.dateEventTime = eventTime;
   }
 }
 

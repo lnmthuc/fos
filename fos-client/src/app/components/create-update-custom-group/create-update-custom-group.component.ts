@@ -153,15 +153,18 @@ export class CreateUpdateCustomGroupComponent implements OnInit, OnChanges {
       customGroup.Name = this.groupName;
       customGroup.Owner = this.currentUser.Id;
       customGroup.Users = users;
-      this.customGroupService.updateGroup(customGroup).then(data => {
-        if (!data) {
-          this.toast('Update group success', 'Dismiss');
-        }
-        this.isCloseDrawer.emit({
-          isClose: true,
-          isChange: true
-        });
-      });
+      this.customGroupService
+        .updateGroup(customGroup)
+        .then(data => {
+          if (!data) {
+            this.toast('Update group success', 'Dismiss');
+          }
+          this.isCloseDrawer.emit({
+            isClose: true,
+            isChange: true
+          });
+        })
+        .catch(error => this.toast(error, 'Dismiss'));
     } else {
       this.createGroup(users);
     }
@@ -171,15 +174,18 @@ export class CreateUpdateCustomGroupComponent implements OnInit, OnChanges {
     customGroup.Name = this.groupName;
     customGroup.Owner = this.currentUser.Id;
     customGroup.Users = users;
-    this.customGroupService.createGroup(customGroup).then(result => {
-      if (!result) {
-        this.toast('Create group success', 'Dismiss');
-      }
-      this.isCloseDrawer.emit({
-        isClose: true,
-        isChange: true
-      });
-    });
+    this.customGroupService
+      .createGroup(customGroup)
+      .then(result => {
+        if (!result) {
+          this.toast('Create group success', 'Dismiss');
+        }
+        this.isCloseDrawer.emit({
+          isClose: true,
+          isChange: true
+        });
+      })
+      .catch(error => this.toast(error, 'Dismiss'));
   }
   removeDuplicateUserAndSave() {
     const participants: GraphUser[] = [];

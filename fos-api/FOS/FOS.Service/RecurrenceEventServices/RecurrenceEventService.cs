@@ -200,7 +200,7 @@ namespace FOS.Services.RecurrenceEventServices
                                 var emailTemplateDictionary = _fosCoreService.GetEmailTemplate(@"App_Data\RemindEmailTemplate.json");
                                 emailTemplateDictionary.TryGetValue("Body", out string body);
                                 emailTemplateDictionary.TryGetValue("Subject", out string subject);
-                                _fosCoreService.SendEmail(clientContext, "admin@devpreciovn.onmicrosoft.com", item.UserMail, _sendEmailService.Parse(body, item), subject);
+                                _fosCoreService.SendEmail(clientContext, "Fos.service@preciofishbone.se", item.UserMail, _sendEmailService.Parse(body, item), subject);
                                 WriteToFile("Service is sent email at! " + item.Id);
                             }
                             break;

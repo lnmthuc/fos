@@ -89,7 +89,7 @@ namespace FOS.Services.FosCoreService
         }
         public ClientContext GetClientContext()
         {
-            var siteUrl = "https://devpreciovn.sharepoint.com/sites/FOS/";
+            var siteUrl = "https://precio.sharepoint.com/sites/FOS/";
             var loginName = ConfigurationSettings.AppSettings["loginName"];
             var passWord = ConfigurationSettings.AppSettings["passWord"];
             var securePassword = new SecureString();

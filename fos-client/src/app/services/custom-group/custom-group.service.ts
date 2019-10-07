@@ -61,6 +61,8 @@ export class CustomGroupService {
         .then(result => {
           if (result.Success) {
             resolve(result.Data);
+          } else {
+            reject(result.ErrorMessage);
           }
         })
         .catch(alert => this.oauthService.checkAuthError(alert));
@@ -78,6 +80,8 @@ export class CustomGroupService {
         .then(result => {
           if (result.Success) {
             resolve(result.Data);
+          } else {
+            reject(result.ErrorMessage);
           }
         })
         .catch(alert => this.oauthService.checkAuthError(alert));

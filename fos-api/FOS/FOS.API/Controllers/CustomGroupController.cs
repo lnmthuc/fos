@@ -29,6 +29,10 @@ namespace FOS.API.Controllers
         {
             try
             {
+                if(customGroup.Name == null || customGroup.Name.Trim().Length == 0)
+                {
+                    return ApiUtil.CreateFailResult("Group must have name!");
+                }
                 var domainGroup = _customGroupDtoMapper.DtoToDomain(customGroup);
                 _customGroupService.CreateGroup(domainGroup);
                 return ApiUtil.CreateSuccessfulResult();
@@ -61,6 +65,10 @@ namespace FOS.API.Controllers
         {
             try
             {
+                if (customGroup.Name == null || customGroup.Name.Trim().Length == 0)
+                {
+                    return ApiUtil.CreateFailResult("Group must have name!");
+                }
                 var domainGroup = _customGroupDtoMapper.DtoToDomain(customGroup);
                 _customGroupService.UpdateGroup(domainGroup);
                 return ApiUtil.CreateSuccessfulResult();

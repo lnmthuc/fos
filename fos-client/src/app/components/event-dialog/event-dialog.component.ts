@@ -384,7 +384,7 @@ export class EventDialogComponent implements OnInit {
         Participants: numberParticipant.toString(),
         Category: self.ownerForm.get("userInput").value.Categories,
         RestaurantId: self.ownerForm.get("userInput").value.RestaurantId,
-        ServiceId: self.clonedEventInfo
+        ServiceId: self.clonedEventInfo && self.clonedEventInfo.ServiceId
           ? self.clonedEventInfo.ServiceId
           : self.data.idService.toString(),
         DeliveryId: self.ownerForm.get("userInput").value.DeliveryId,

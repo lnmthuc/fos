@@ -65,7 +65,7 @@ namespace FOS.Services.ExternalServices.NowService
         {
             HttpContent requestContent = new StreamContent(Config.GenerateStreamFromString(myJSONRequest.ToString()));
             var response = await h.PostAsync(api.API, requestContent);
-            return response;
+          return response;
         }
         private async Task<HttpResponseMessage> GetMethod(StringBuilder myJSONRequest)
         {

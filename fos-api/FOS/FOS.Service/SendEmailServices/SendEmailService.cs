@@ -73,8 +73,10 @@ namespace FOS.Services.SendEmailServices
                     var emailp = new EmailProperties();
                     string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
 
-                    foreach (var user in emailTemplate.UsersEmail)
+                    foreach (User user in emailTemplate.UsersEmail)
                     {
+                        var u = clientContext.Web.EnsureUser(user.UserPrincipalName);
+
                         Guid idOrder = Guid.NewGuid();
                         emailTemplate.MakeOrder = hostname + "make-order/" + idOrder;
                         emailTemplate.NotParticipant = hostname + "not-participant/" + idOrder;
@@ -111,8 +113,10 @@ namespace FOS.Services.SendEmailServices
                 string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
                 var host = await _sPUserService.GetCurrentUser();
 
-                foreach (var user in users)
+                foreach (UserNotOrderMailInfo user in users)
                 {
+                    var u = clientContext.Web.EnsureUser(user.UserMail);
+
                     emailTemplate.MakeOrder = hostname + "make-order/" + user.OrderId;
                     emailTemplate.NotParticipant = hostname + "not-participant/" + user.OrderId;
                     emailp.To = new List<string>() { user.UserMail };
@@ -139,8 +143,10 @@ namespace FOS.Services.SendEmailServices
                     string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
                     var host = await _sPUserService.GetCurrentUser();
 
-                    foreach (var user in users)
+                    foreach (Model.Domain.UserReorder user in users)
                     {
+                        var u = clientContext.Web.EnsureUser(user.UserMail);
+
                         user.FoodNameHtml = "";
                         foreach (var food in user.FoodName)
                         {
@@ -209,8 +215,10 @@ namespace FOS.Services.SendEmailServices
                     var emailp = new EmailProperties();
                     string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
 
-                    foreach (var user in newListUser)
+                    foreach (User user in newListUser)
                     {
+                        var u = clientContext.Web.EnsureUser(user.Mail);
+
                         Guid idOrder = Guid.NewGuid();
                         emailTemplate.MakeOrder = hostname + "make-order/" + idOrder;
                         emailTemplate.NotParticipant = hostname + "make-order/" + idOrder;
@@ -271,8 +279,10 @@ namespace FOS.Services.SendEmailServices
                     string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
                     var host = await _sPUserService.GetCurrentUser();
 
-                foreach (var user in users)
+                foreach (UserFeedbackMailInfo user in users)
                 {
+                    var u = clientContext.Web.EnsureUser(user.UserMail);
+
                     emailTemplate.FeedBack = hostname + "/feedback/" + user.OrderId;
                     emailp.To = new List<string>() { user.UserMail };
                     emailp.From = host.Mail;
@@ -299,8 +309,10 @@ namespace FOS.Services.SendEmailServices
                     string hostname = WebConfigurationManager.AppSettings[OAuth.HOME_URI];
                     var host = await _sPUserService.GetCurrentUser();
                     List<Model.Domain.EventUsers> filterList = await FilterUser(listUser);
-                    foreach (var user in filterList)
+                    foreach (Model.Domain.EventUsers user in filterList)
                     {
+                        var u = clientContext.Web.EnsureUser(user.UserMail);
+
                         emailTemplateDictionary.TryGetValue("Body", out string body);
                         emailTemplateDictionary.TryGetValue("Subject", out string subject);
 

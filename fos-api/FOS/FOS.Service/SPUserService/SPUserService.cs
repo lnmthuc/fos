@@ -172,7 +172,13 @@ namespace FOS.Services.SPUserService
                 dynamic response = JsonConvert.DeserializeObject(resultGroup);
 
                 List<Model.Domain.User> jsonUsers = response.value.ToObject<List<Model.Domain.User>>();
-
+                foreach (var u in jsonUsers)
+                {
+                    if (u.Mail == null)
+                    {
+                        u.Mail = u.UserPrincipalName;
+                    }
+                }
                 return jsonUsers;
             }
             else

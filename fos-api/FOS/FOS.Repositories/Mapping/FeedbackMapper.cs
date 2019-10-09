@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FOS.Model.Domain;
 using FOS.Repositories.DataModel;
 using Newtonsoft.Json;
 
@@ -11,7 +10,7 @@ namespace FOS.Repositories.Mapping
 {
     public interface IFeedbackMapper
     {
-        Model.Domain.FeedBack MapToDomain(DataModel.FeedBack feedBack);
+       Model.Domain.FeedBack MapToDomain(DataModel.FeedBack feedBack);
         DataModel.FeedBack MapToDataModel(Model.Domain.FeedBack feedBack);
     }
     public class FeedbackMapper : IFeedbackMapper

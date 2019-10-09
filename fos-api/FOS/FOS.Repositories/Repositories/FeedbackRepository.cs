@@ -11,7 +11,7 @@ namespace FOS.Repositories.Repositories
     {
         FeedBack GetById(string Id);
         void Update(FeedBack feedBack);
-
+        List<FeedBack> GetByFoodId(string foodId);
     }
     public class FeedbackRepository : IFeedbackRepository
     {
@@ -47,6 +47,21 @@ namespace FOS.Repositories.Repositories
                 _context.FeedBacks.Where(fb => fb.DeliveryId == feedBack.DeliveryId).FirstOrDefault().Ratings = feedBack.Ratings;
                 _context.FeedBacks.Where(fb => fb.DeliveryId == feedBack.DeliveryId).FirstOrDefault().FoodFeedbacks = feedBack.FoodFeedbacks;
                 _context.SaveChanges();
+            }
+        }
+
+        public List<FeedBack> GetByFoodId(string foodId)
+        {
+            try
+            {
+                List<FeedBack> _feedback = (from f in _context.FeedBacks
+                              where f.FoodFeedbacks.Contains(foodId)
+                              select f).ToList();
+                return _feedback;
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
     }

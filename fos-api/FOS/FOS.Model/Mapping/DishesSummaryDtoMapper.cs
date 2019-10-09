@@ -21,7 +21,8 @@ namespace FOS.Model.Mapping
                 Food = dishesSummary.Food,
                 RelativePercent = dishesSummary.RelativePercent,
                 Percent = dishesSummary.Percent,
-                AppearTime = dishesSummary.AppearTimes
+                AppearTime = dishesSummary.AppearTimes,
+                FoodId = dishesSummary.FoodId
             };
         }
         public IEnumerable<Model.Dto.DishesSummary> ListToDto(IEnumerable<Model.Domain.DishesSummary> dishesSummary)

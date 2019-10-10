@@ -4,7 +4,10 @@ import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { environment } from 'src/environments/environment';
 import { DishesSummary } from 'src/app/models/dishes-summary';
-
+interface FoodDetail {
+  dishes: DishesSummary;
+  restaurant: string;
+}
 @Component({
   selector: 'app-summary-dishes-diaglog-feedback',
   templateUrl: './summary-dishes-diaglog-feedback.component.html',
@@ -12,10 +15,11 @@ import { DishesSummary } from 'src/app/models/dishes-summary';
 })
 export class SummaryDishesDiaglogFeedbackComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<SummaryDishesDiaglogFeedbackComponent>,
-              @Inject(MAT_DIALOG_DATA) public foodDetail: DishesSummary,
+              @Inject(MAT_DIALOG_DATA) public foodDetail: FoodDetail,
               private feedBackService: FeedbackService,
               private userService: UserService) { }
-  private foodName = this.foodDetail.Food;
+  private foodName = this.foodDetail.dishes.Food;
+  private restaurantName = this.foodDetail.restaurant;
   private chatAlignRight = false;
   private chatAlignLeft = true;
   loading: boolean;
@@ -57,7 +61,7 @@ export class SummaryDishesDiaglogFeedbackComponent implements OnInit {
   ngOnInit() {
     const self = this;
     self.loading = true;
-    const foodId = this.foodDetail.FoodId;
+    const foodId = this.foodDetail.dishes.FoodId;
     this.feedBackService.GetByFoodId(foodId.toString()).then(
      value => {
        if (value.length === 0) {

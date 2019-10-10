@@ -1,25 +1,18 @@
 <section class="module">
+    <h1>Feedback</h1>
+    <h4>Restaurant: {{restaurantName}}</h4>
+    <h4>Food: {{foodName}}</h4>
     <app-loading [loading]="loading"></app-loading>
-    <header class="top-bar">
-        <div class="left">
-            <span class="icon typicons-message"></span>
-            <h1>Feedback - {{foodName}}</h1>
-        </div>
-        <div class="right">
-            <span class="icon typicons-minus"></span>
-            <span class="icon typicons-times"></span>
-        </div>
-    </header>
-
+    
     <ol class="discussion">
         <div *ngFor="let m of messages">
             <li [class.other]="m.chatAlignLeft==true" [class.self]="m.chatAlignLeft==false">
-                <div class="avatar">
+                <div class="avatar inline">
                     <img src="{{ apiUrl }}api/SPUser/GetAvatar?Id={{
                         m.Id
                       }}&avatarName={{ m.Name }}" />
                 </div>
-                <div class="messages">
+                <div class="messages inline">
                     <p>{{m.what}}</p>
                     <time>{{m.who}}</time>
                 </div>

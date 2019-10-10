@@ -92,11 +92,11 @@ export class SummaryDishesDialogComponent implements OnInit {
   closeDialog($event) {
     this.dialogRef.close();
   }
-  showFeedBack(foodId: number) {
+  showFeedBack(foodDetail: DishesSummary) {
     const dialogRef = this.dialog.open(SummaryDishesDiaglogFeedbackComponent, {
       maxHeight: '98vh',
-      width: '80%',
-      data: foodId
+      width: '50%',
+      data: foodDetail
     });
 
     dialogRef.afterClosed().subscribe(result => {

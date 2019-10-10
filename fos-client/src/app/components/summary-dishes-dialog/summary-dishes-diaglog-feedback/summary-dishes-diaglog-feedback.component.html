@@ -1,17 +1,14 @@
 <section class="module">
     <app-loading [loading]="loading"></app-loading>
     <header class="top-bar">
-
         <div class="left">
             <span class="icon typicons-message"></span>
-            <h1>Feedback</h1>
+            <h1>Feedback - {{foodName}}</h1>
         </div>
-
         <div class="right">
             <span class="icon typicons-minus"></span>
             <span class="icon typicons-times"></span>
         </div>
-
     </header>
 
     <ol class="discussion">
@@ -32,12 +29,6 @@
 </section>
 
 <div class="summary-dishes-dialog">
-    <!-- <div class="dialog-header">
-        <h2>Feedback</h2>
-    </div> -->
-
-
-
     <div class="dialog-actions">
         <button mat-raised-button (click)="closeDialog($event)">
             Close

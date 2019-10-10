@@ -3,6 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FeedbackService } from 'src/app/services/feedback/feedback.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { environment } from 'src/environments/environment';
+import { DishesSummary } from 'src/app/models/dishes-summary';
 
 @Component({
   selector: 'app-summary-dishes-diaglog-feedback',
@@ -11,10 +12,10 @@ import { environment } from 'src/environments/environment';
 })
 export class SummaryDishesDiaglogFeedbackComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<SummaryDishesDiaglogFeedbackComponent>,
-              @Inject(MAT_DIALOG_DATA) public foodId: number,
+              @Inject(MAT_DIALOG_DATA) public foodDetail: DishesSummary,
               private feedBackService: FeedbackService,
               private userService: UserService) { }
-  // private imagePath = 'img/list/60.jpeg';
+  private foodName = this.foodDetail.Food;
   private chatAlignRight = false;
   private chatAlignLeft = true;
   loading: boolean;
@@ -56,16 +57,16 @@ export class SummaryDishesDiaglogFeedbackComponent implements OnInit {
   ngOnInit() {
     const self = this;
     self.loading = true;
-    const foodId = this.foodId;
+    const foodId = this.foodDetail.FoodId;
     this.feedBackService.GetByFoodId(foodId.toString()).then(
      value => {
        if (value.length === 0) {
         self.loading = false;
        }
-       value.forEach(function(element) {
-        element.FoodFeedbacks.forEach(function(ff) {
+       value.forEach(element => {
+        element.FoodFeedbacks.forEach(ff => {
           if ( ff.FoodId === foodId.toString()) {
-            ff.UserFeedBacks.forEach(function(user){
+            ff.UserFeedBacks.forEach(user => {
               self.userService.getUserById(user.UserId).then( u => {
                 console.log(u.Mail, user.Comment);
                 self.messages.push(

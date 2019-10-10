@@ -1,0 +1,30 @@
+<section class="module">
+    <h1>Feedback</h1>
+    <h4>Restaurant: {{restaurantName}}</h4>
+    <h4>Food: {{foodName}}</h4>
+    <app-loading [loading]="loading"></app-loading>
+    
+    <ol class="discussion">
+        <div *ngFor="let m of messages">
+            <li [class.other]="m.chatAlignLeft==true" [class.self]="m.chatAlignLeft==false">
+                <div class="avatar inline">
+                    <img src="{{ apiUrl }}api/SPUser/GetAvatar?Id={{
+                        m.Id
+                      }}&avatarName={{ m.Name }}" />
+                </div>
+                <div class="messages inline">
+                    <p>{{m.what}}</p>
+                    <time>{{m.who}}</time>
+                </div>
+            </li>
+        </div>
+    </ol>
+</section>
+
+<div class="summary-dishes-dialog">
+    <div class="dialog-actions">
+        <button mat-raised-button (click)="closeDialog($event)">
+            Close
+        </button>
+    </div>
+</div>

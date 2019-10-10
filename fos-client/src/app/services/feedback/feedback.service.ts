@@ -64,4 +64,22 @@ export class FeedbackService {
         .catch(alert => this.oauthService.checkAuthError(alert));
     });
   }
+
+  GetByFoodId(foodId: string): Promise<Array<FeedBack>> {
+    return new Promise<Array<FeedBack>>((resolve, reject) => {
+      this.http
+        .get<ApiOperationResult<Array<FeedBack>>>(
+          environment.apiUrl + 'api/feedback/GetByFoodId/' + foodId
+        )
+        .toPromise()
+        .then(result => {
+          if (result.Success) {
+            resolve(result.Data);
+          } else {
+            reject(new Error(JSON.stringify(result.ErrorMessage)));
+          }
+        })
+        .catch(alert => this.oauthService.checkAuthError(alert));
+    });
+  }
 }

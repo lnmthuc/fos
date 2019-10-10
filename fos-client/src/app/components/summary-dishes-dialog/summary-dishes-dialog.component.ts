@@ -20,7 +20,11 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { TablePaging } from 'src/app/models/table-paging';
 import { DataRoutingService } from 'src/app/data-routing.service';
 import { Subscription } from 'rxjs';
-
+import { SummaryDishesDiaglogFeedbackComponent } from './summary-dishes-diaglog-feedback/summary-dishes-diaglog-feedback.component';
+interface FoodDetail {
+  dishes: DishesSummary;
+  restaurant: string;
+}
 @Component({
   selector: 'app-summary-dishes-dialog',
   templateUrl: './summary-dishes-dialog.component.html',
@@ -43,6 +47,7 @@ export class SummaryDishesDialogComponent implements OnInit {
   displayedColumns: string[] = [
     'Rank',
     'Food',
+    'Comments',
     'Percent',
     'AppearTime',
     'RelativePercent'
@@ -89,5 +94,20 @@ export class SummaryDishesDialogComponent implements OnInit {
 
   closeDialog($event) {
     this.dialogRef.close();
+  }
+  showFeedBack(foodDetail: DishesSummary) {
+    const foodInfo: FoodDetail = {
+        dishes: foodDetail,
+        restaurant: this.data.Restaurant
+    };
+    const dialogRef = this.dialog.open(SummaryDishesDiaglogFeedbackComponent, {
+      maxHeight: '95vh',
+      width: '40%',
+      data: foodInfo
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+    });
   }
 }

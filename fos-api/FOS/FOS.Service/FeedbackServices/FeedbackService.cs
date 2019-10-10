@@ -30,7 +30,15 @@ namespace FOS.Services.FeedbackServices
             }
             return null;
         }
-
+        public List<FeedBack> GetByFoodId(string foodId)
+        {
+            List<FeedBack> _feedback = _feedbackRepository.GetByFoodId(foodId).Select(f=> _feedbackMapper.MapToDomain(f)).ToList();
+            if (_feedback != null)
+            {
+                return _feedback;
+            }
+            return null;
+        }
         public void RateRestaurant(FeedBack feedBack)
         {
             var _feedback = _feedbackRepository.GetById(feedBack.DeliveryId);

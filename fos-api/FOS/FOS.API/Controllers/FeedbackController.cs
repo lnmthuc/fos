@@ -110,5 +110,24 @@ namespace FOS.API.Controllers
                 return ApiUtil.CreateFailResult(e.ToString());
             }
         }
+        [HttpGet]
+        [Route("GetByFoodId/{foodId}")]
+        public ApiResponse<List<Model.Dto.FeedBack>> GetByFoodId(string foodId)
+        {
+            try
+            {
+                List<Model.Domain.FeedBack> feedback = _feedbackService.GetByFoodId(foodId);
+                if (feedback != null)
+                {
+                    List<Model.Dto.FeedBack> listDto = feedback.Select(f => _feedbackDtoMapper.ToDto(f)).ToList();
+                    return ApiUtil<List<Model.Dto.FeedBack>>.CreateSuccessfulResult(listDto);
+                }
+                return ApiUtil<List<Model.Dto.FeedBack>>.CreateSuccessfulResult(null);
+            }
+            catch (Exception e)
+            {
+                return ApiUtil<List<Model.Dto.FeedBack>>.CreateFailResult(e.ToString());
+            }
+        }
     }
 }

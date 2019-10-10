@@ -116,6 +116,7 @@ import { NoPromotionsNotificationComponent } from "./components/event-dialog/no-
 import { AddPromotionDialogComponent } from "./components/event-summary-dialog/add-promotion-dialog/add-promotion-dialog.component";
 import { BehaviorSubject } from "rxjs";
 import { DataRoutingService } from "./data-routing.service";
+import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dishes-dialog/summary-dishes-diaglog-feedback/summary-dishes-diaglog-feedback.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +175,8 @@ import { DataRoutingService } from "./data-routing.service";
     CustomGroupPageComponent,
     CreateUpdateCustomGroupComponent,
     NoPromotionsNotificationComponent,
-    AddPromotionDialogComponent
+    AddPromotionDialogComponent,
+    SummaryDishesDiaglogFeedbackComponent
   ],
   // declarations: [
   //     AppComponent,
@@ -284,7 +286,8 @@ import { DataRoutingService } from "./data-routing.service";
     OpenEventDialogComponent,
     UsersOrderedFoodDialogComponent,
     NoPromotionsNotificationComponent,
-    AddPromotionDialogComponent
+    AddPromotionDialogComponent,
+    SummaryDishesDiaglogFeedbackComponent
   ]
 })
 export class AppModule {}

@@ -885,7 +885,7 @@ export class EventDialogEditComponent implements OnInit {
         Img: '',
         IsGroup: 0,
         Name: eventHost.Name,
-        OrderStatus: "Not order"
+        OrderStatus: "Not Order"
       };
       this.eventUsers.push(Host);
       self.table.renderRows();

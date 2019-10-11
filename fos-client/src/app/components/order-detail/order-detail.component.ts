@@ -233,8 +233,12 @@ export class OrderDetailComponent implements OnInit {
     this.orderService
       .SetOrder(this.order, this.isWildParticipant)
       .then(result => {
-        this.toast("Save!", "Dismiss");
-        if (this.idOrder.includes("ffa")) {
+        if (this.order.FoodDetail.length > 0) {
+          this.toast('Save!', 'Dismiss');
+        } else {
+          this.toast('Please choose food in menu to save your order!', 'Dismiss');
+        }
+        if (this.idOrder.includes('ffa')) {
           window.close();
         }
       })

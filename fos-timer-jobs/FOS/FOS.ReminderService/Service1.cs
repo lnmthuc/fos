@@ -31,14 +31,11 @@ namespace FOS.ReminderService
         public Service1()
         {
             InitializeComponent();
-            
+
         }
 
         protected override void OnStart(string[] args)
         {
-           
-
-            WriteToFile("Service is started at " + DateTime.Now);
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
             timer.Interval = 60000; //number in milisecinds  
             timer.Enabled = true;
@@ -79,23 +76,20 @@ namespace FOS.ReminderService
             //get event on sharepoint
             try
             {
-                var container = new UnityContainer();
-                RegisterUnity.Register(container);
-                coreService = container.Resolve<FosCoreService>();
-                StartReminderService(coreService);
+                timer.Enabled = false;
+                StartReminderService();
+                timer.Enabled = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                WriteToFile("Service failed: " + ex.StackTrace + " - "+ ex.Message);
+                WriteToFile("Service failed: " + ex.StackTrace + " - " + ex.Message);
             }
-            
+
         }
         public static void sendMailToUserNotOrder(ClientContext clientContext, IEnumerable<UserNotOrderMailInfo> users, string emailTemplateJson)
         {
             try
             {
-               
-
                 var jsonTemplate = ReadEmailJsonTemplate(emailTemplateJson);
                 var templateBody = jsonTemplate.TryGetValue("Body", out object body);
                 ReadEmailTemplate(body.ToString());
@@ -113,12 +107,11 @@ namespace FOS.ReminderService
                         user.EventRestaurant,
                         user.UserMail.ToString(),
                         hostname + "make-order/" + user.OrderId,
-                        hostname + "not-participant/"+ user.OrderId);
+                        hostname + "not-participant/" + user.OrderId);
                     emailp.Subject = subject.ToString();
 
                     Utility.SendEmail(clientContext, emailp);
                     clientContext.ExecuteQuery();
-                    WriteFile.WriteToFile("sendmail to user " + user.UserMail);
                 }
             }
             catch (Exception ex)
@@ -134,22 +127,12 @@ namespace FOS.ReminderService
         {
             emailTemplate = JsonConvert.DeserializeObject<EmailTemplate>(html);
         }
-        public static void StartReminderService(FosCoreService coreService)
+        private void StartReminderService()
         {
+            var container = new UnityContainer();
+            RegisterUnity.Register(container);
+            coreService = container.Resolve<FosCoreService>();
 
-            var timeToCheckMax = "2019-09-17T10:54:00";
-            var timeToCheckMin = "2019-09-17T10:52:00";
-
-            DateTime aDate = DateTime.Now;
-
-
-            DateTime timeCheckMax = aDate.AddMinutes(1);
-            DateTime timeCheckMin = aDate.AddMinutes(-1);
-
-            var timeMax = timeCheckMax.ToString("yyyy-MM-ddTHH:mm:ss");
-            var timeMin = timeCheckMin.ToString("yyyy-MM-ddTHH:mm:ss");
-
-            //var dateToCheck = aDate.ToString("yyyy-MM-ddTHH:mm:ss");
             var clientContext = coreService.GetClientContext();
             var web = clientContext.Web;
             var list = web.Lists.GetByTitle(EventConstantWS.EventList);
@@ -159,77 +142,59 @@ namespace FOS.ReminderService
                         <Query>
                             <Where>
                                     <And>
-                                        <And> +
-                                        <Gt>" +
-                                            "<FieldRef Name='" + EventConstantWS.EventTimeToReminder + "'/>" +
-                                            "<Value Type='DateTime'  IncludeTimeValue='TRUE'>" + timeMin + "</Value>" +
-                                        @"</Gt> +
-                                        <Lt>" +
-                                            "<FieldRef Name='" + EventConstantWS.EventTimeToReminder + "'/>" +
-                                            "<Value Type='DateTime'  IncludeTimeValue='TRUE'>" + timeMax + "</Value>" +
-                                        @"</Lt> +
-                                    
-                                        </And> +
-                                        <And>
                                             <Eq>" +
                                                 "<FieldRef Name='" + EventConstantWS.EventStatus + "'/>" +
                                                 "<Value Type='Text'>" + EventStatus.Opened + "</Value>" +
-                                            @"</Eq> +
+                                            @"</Eq>
                                             <Eq>" +
                                                 "<FieldRef Name='" + EventConstantWS.EventIsReminder + "'/>" +
                                                 "<Value Type='Text'>" + EventIsReminder.No + "</Value>" +
-                                            @"</Eq> +
-                                        </And>
-                                     </And>
+                                            @"</Eq>
+                                   </And>
                             </Where>
                         </Query>
                         <RowLimit>1000</RowLimit>
                     </View>";
 
-            var events = list.GetItems(getAllEventOpened);
+            ListItemCollection events = list.GetItems(getAllEventOpened);
+
             clientContext.Load(events);
             clientContext.ExecuteQuery();
-
-            WriteFile.WriteToFile("Number of event find: " + events.Count.ToString());
-
-            WriteFile.WriteToFile("--------------------------------------------");
 
             if (events.Count > 0)
             {
                 List<Model.Dto.UserNotOrderMailInfo> lstUserNotOrder = new List<Model.Dto.UserNotOrderMailInfo>();
-
                 foreach (var element in events)
                 {
-                    var eventId = element[EventConstantWS.ID].ToString();
-                    UpdateEventIsReminder(clientContext,eventId, "Yes");
-                    WriteFile.WriteToFile("Update to remindered");
+                    DateTime reminderTime = DateTime.Parse(element[EventConstantWS.EventTimeToReminder].ToString()).ToLocalTime();
+                    DateTime nowTime = DateTime.Now;
 
-                    var eventTite = element[EventConstantWS.EventTitle].ToString();
-                    var closeTimeString = element[EventConstantWS.EventTimeToClose].ToString();
-                    var closeTime = DateTime.Parse(closeTimeString).ToLocalTime();
-                    var eventRestaurant = element[EventConstantWS.EventRestaurant].ToString();
-                    Console.WriteLine(eventTite);
-                    WriteFile.WriteToFile("EventId: " + eventId);
-
-                    List<Model.Domain.UserNotOrderEmail> userNotOrder = coreService.GetUserNotOrderEmail(eventId);
-
-                    WriteFile.WriteToFile("Find number userNotOrder: " + userNotOrder.Count.ToString());
-                    WriteFile.WriteToFile("Event find: " + eventTite.ToString());
-
-                    foreach (var user in userNotOrder)
+                    TimeSpan span = nowTime.Subtract(reminderTime);
                     {
-                        Model.Dto.UserNotOrderMailInfo userNew = new Model.Dto.UserNotOrderMailInfo();
-                        userNew.EventRestaurant = eventRestaurant;
-                        userNew.EventTitle = eventTite;
-                        userNew.OrderId = user.OrderId;
-                        userNew.UserMail = user.UserEmail;
-                        lstUserNotOrder.Add(userNew);
-                        WriteFile.WriteToFile("User not order: " + userNew.UserMail.ToString());
-                    }
 
+                        var eventId = element[EventConstantWS.ID].ToString();
+                        UpdateEventIsReminder(clientContext, eventId, "Yes");
+
+                        var eventTite = element[EventConstantWS.EventTitle].ToString();
+                        var closeTimeString = element[EventConstantWS.EventTimeToClose].ToString();
+                        var closeTime = DateTime.Parse(closeTimeString).ToLocalTime();
+                        var eventRestaurant = element[EventConstantWS.EventRestaurant].ToString();
+                        Console.WriteLine(eventTite);
+
+                        List<Model.Domain.UserNotOrderEmail> userNotOrder = coreService.GetUserNotOrderEmail(eventId);
+
+                        foreach (var user in userNotOrder)
+                        {
+                            Model.Dto.UserNotOrderMailInfo userNew = new Model.Dto.UserNotOrderMailInfo();
+                            userNew.EventRestaurant = eventRestaurant;
+                            userNew.EventTitle = eventTite;
+                            userNew.OrderId = user.OrderId;
+                            userNew.UserMail = user.UserEmail;
+                            lstUserNotOrder.Add(userNew);
+                        }
+                    }
                 }
                 //send mail
-                WriteFile.WriteToFile("sendmail is recall at " + DateTime.Now);
 
                 string path = AppDomain.CurrentDomain.BaseDirectory + EventConstantWS.ReminderEventEmailTemplate;
                 string emailTemplateJson = System.IO.File.ReadAllText(path);

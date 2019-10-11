@@ -292,6 +292,7 @@ export class EventDialogComponent implements OnInit {
       });
       self.table.renderRows();
     }
+    self.ownerForm.get('userInputPicker').setValue(null);
   }
 
   SaveToSharePointEventList(): void {

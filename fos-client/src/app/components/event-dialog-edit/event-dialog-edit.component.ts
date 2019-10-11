@@ -617,6 +617,7 @@ export class EventDialogEditComponent implements OnInit {
         self.table.renderRows();
       }
     }
+    self.ownerForm.get('userInputPicker').setValue(null);
   }
 
   DeleteUserInTable(name: string): void {

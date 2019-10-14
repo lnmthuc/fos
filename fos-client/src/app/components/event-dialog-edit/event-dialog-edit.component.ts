@@ -889,6 +889,7 @@ export class EventDialogEditComponent implements OnInit {
         OrderStatus: "Not Order"
       };
       this.eventUsers.push(Host);
+      self.ownerForm.get('userInputPicker').setValue(null);
       self.table.renderRows();
     }
   }

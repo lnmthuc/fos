@@ -143,6 +143,7 @@ export class CreateUpdateCustomGroupComponent implements OnInit, OnChanges {
         OrderStatus: 'Not Order'
       };
       this.eventUsers.push(Host);
+      self.ownerForm.get('userInputPicker').setValue(null);
       self.table.renderRows();
     }
   }

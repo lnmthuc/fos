@@ -19,6 +19,7 @@
         public CanMakeOrder: boolean = false;   
         public CanSendRemind: boolean = false;   
         public CanViewOrder: boolean = false;   
-        public CanViewEventSummary: boolean = false;
+        public CanViewEventSummary: boolean = false;   
+        public CanShareEventLink: boolean = false;
     }
          

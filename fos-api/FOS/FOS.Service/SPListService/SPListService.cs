@@ -165,13 +165,16 @@ namespace FOS.Services.SPListService
                     List members = context.Web.Lists.GetByTitle(EventFieldName.EventList);
 
                     ListItem listItem = members.GetItemById(id);
-                    context.Load(listItem, li => li[EventFieldName.EventParticipantsJson]);
+                    context.Load(listItem, li => li[EventFieldName.EventParticipantsJson], li => li[EventFieldName.EventParticipants]);
                     context.ExecuteQuery();
 
                     var EventParticipantsJson = JsonConvert.DeserializeObject<List<Model.Dto.GraphUser>>(listItem.FieldValues[EventFieldName.EventParticipantsJson].ToString());
                     EventParticipantsJson.Add(participant);
+                    int Number = Int32.Parse(listItem.FieldValues[EventFieldName.EventParticipants].ToString());
+                    Number++;
 
                     listItem[EventFieldName.EventParticipantsJson] = JsonConvert.SerializeObject(EventParticipantsJson).ToString();
+                    listItem[EventFieldName.EventParticipants] = Number;
                     listItem.Update();
                     context.ExecuteQuery();
                 }

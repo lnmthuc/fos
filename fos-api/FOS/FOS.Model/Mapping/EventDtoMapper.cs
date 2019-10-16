@@ -99,7 +99,8 @@ namespace FOS.Model.Mapping
                     CanSendRemind = eventDomain.Action.CanSendRemind,
                     CanViewEvent = eventDomain.Action.CanViewEvent,
                     CanViewOrder = eventDomain.Action.CanViewOrder,
-                    CanViewEventSummary = eventDomain.Action.CanViewEventSummary
+                    CanViewEventSummary = eventDomain.Action.CanViewEventSummary,
+                    CanShareEventLink = eventDomain.Action.CanShareEventLink
                 };
             }
             

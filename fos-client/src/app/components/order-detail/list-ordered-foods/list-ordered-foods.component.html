@@ -87,6 +87,7 @@
               align="right"
               min="0"
               oninput="this.value = Math.abs(this.value)"
+              (change)="onBlurMethodAmount($event.target.value, element)"
             />
           </mat-form-field>
         </td>

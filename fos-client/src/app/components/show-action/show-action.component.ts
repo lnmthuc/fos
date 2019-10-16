@@ -6,7 +6,7 @@ import {
   Input,
   Inject
 } from '@angular/core';
-import { TooltipPosition } from '@angular/material';
+import { TooltipPosition, MatSnackBar } from '@angular/material';
 import { FormControl } from '@angular/forms';
 import { Event } from './../../models/event';
 import { EventDialogViewComponent } from '../event-dialog-view/event-dialog-view.component';
@@ -49,7 +49,8 @@ export class ShowActionComponent implements OnInit {
     private eRef: ElementRef,
     private dialog: MatDialog,
     private eventFormService: EventFormService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -188,5 +189,32 @@ export class ShowActionComponent implements OnInit {
       //console.log("The dialog was closed");
     });
     this.isShowListAction = false;
+  }
+  copyEventToClipBoard() {
+    const eventlink =
+              window.location.protocol +
+              '//' +
+              window.location.hostname +
+              ':4200/make-order/ffa' +
+              this.event.EventId;
+
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = eventlink;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+    this.toast('Copied event link to clipboard!', 'Dismiss');
+    this.isShowListAction = false;
+  }
+  toast(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000
+    });
   }
 }

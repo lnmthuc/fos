@@ -62,16 +62,16 @@ export class OrderDetailComponent implements OnInit {
     private eventFormService: EventFormService,
     private _snackBar: MatSnackBar,
     private router: Router,
-    private eventPromotionService: EventPromotionService
+    private eventPromotionService: EventPromotionService,
   ) {}
 
   async ngOnInit() {
+   
     this.data = { restaurant: null, detail: null, idService: 1 };
     this.idOrder = this.route.snapshot.paramMap.get("id");
-
     this.isWildParticipant = false;
     // check if wild guest order
-    if (this.idOrder.includes("ffa")) {
+    if (this.idOrder.includes('ffa') && !this.idOrder.includes('-')) {
       var eventId = this.idOrder.slice(3);
       this.userService.getCurrentUser().then(user => {
         this.orderService
@@ -118,7 +118,7 @@ export class OrderDetailComponent implements OnInit {
                         IdDelivery: Number(this.event.DeliveryId),
                         FoodDetail: [],
                         OrderStatus: 0,
-                        Email: ""
+                        Email: this.orderUser.Mail
                       };
                       this.checkedData = this.order.FoodDetail;
   
@@ -229,6 +229,8 @@ export class OrderDetailComponent implements OnInit {
       this.order.OrderStatus = 1;
     } else {
       this.order.OrderStatus = 0;
+      this.toast('Please choose food in menu to save your order!', 'Dismiss');
+      return;
     }
     this.orderService
       .SetOrder(this.order, this.isWildParticipant)
@@ -236,13 +238,13 @@ export class OrderDetailComponent implements OnInit {
         if (this.order.FoodDetail.length > 0) {
           this.toast('Save!', 'Dismiss');
         } else {
-          this.toast('Please choose food in menu to save your order!', 'Dismiss');
         }
         if (this.idOrder.includes('ffa')) {
           window.close();
         }
       })
       .catch(error => this.toast(error, "Dismiss"));
+    this.router.navigate(['/home']);
   }
   deleteFoodFromMenu($event: FoodDetailJson) {
     this.foodlist.unChecked(this.foodlist.MapFoodDetail2Food($event));

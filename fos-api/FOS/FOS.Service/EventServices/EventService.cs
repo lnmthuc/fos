@@ -77,7 +77,8 @@ namespace FOS.Services.EventServices
                             (isParticipant || eventModel.EventType == EventType.Open)
                             && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
                 CanViewOrder = eventModel.Status == EventStatus.Closed && isParticipant,
-                CanViewEventSummary = isHost || isParticipant
+                CanViewEventSummary = isHost || isParticipant,
+                CanShareEventLink = eventModel.EventType == EventType.Open ? true : false
             };
         }
         public Event GetEvent(int id)

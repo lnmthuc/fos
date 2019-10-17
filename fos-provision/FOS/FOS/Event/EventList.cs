@@ -14,7 +14,7 @@ namespace FOS.Event
 
         public static void CreateList(ClientContext context)
         {
-            if (Helper.CheckHelper.isExist_Helper(context, ListName, "list") == 0)
+            if (Helper.CheckHelper.isExist_Helper(context, ListName, Constant.Constant.listName) == 0)
             {
                 ListCreationInformation creationInfo = new ListCreationInformation();
                 creationInfo.Title = ListName;

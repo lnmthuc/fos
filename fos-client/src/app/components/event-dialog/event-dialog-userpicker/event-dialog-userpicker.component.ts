@@ -94,18 +94,18 @@ export class EventDialogUserpickerComponent implements OnInit {
             }
           });
           if ( dataSourceTemp.length > 0 ) {
-            const a = this.participantList;
-            const filterList: UserPicker[] = [];
-            dataSourceTemp.forEach(user => {
-              const checkDuplicatted = this.participantList.find( p => p.Email === user.Email);
+            // const a = this.participantList;
+            // const filterList: UserPicker[] = [];
+            // dataSourceTemp.forEach(user => {
+            //   const checkDuplicatted = this.participantList.find( p => p.Email === user.Email);
 
-              if ( checkDuplicatted !== undefined && checkDuplicatted.Email) {
-                // filterList.push(checkDuplicatted);
-              } else {
-                filterList.push(user);
-              }
-            });
-            self.userHost = filterList;
+            //   if ( checkDuplicatted !== undefined && checkDuplicatted.Email) {
+            //     // filterList.push(checkDuplicatted);
+            //   } else {
+            //     filterList.push(user);
+            //   }
+            // });
+            self.userHost = dataSourceTemp;
           }
         }
         self.isHostLoading = false;

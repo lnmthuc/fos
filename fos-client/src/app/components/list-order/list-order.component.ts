@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { MatSelectChange } from '@angular/material/select';
 import { Overlay } from '@angular/cdk/overlay';
+import { EventDialogViewComponent } from '../event-dialog-view/event-dialog-view.component';
 
 moment.locale('vi');
 
@@ -243,5 +244,16 @@ export class ListOrderComponent implements OnInit, OnChanges {
     return Number(value)
       .toFixed(0)
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  }
+  viewEvent(element: Event): void {
+    const dialogRef = this.dialog.open(EventDialogViewComponent, {
+      maxHeight: '98vh',
+      width: '80%',
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+    });
   }
 }

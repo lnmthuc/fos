@@ -1,5 +1,5 @@
 <app-loading [loading]="loading"></app-loading>
-<h1 style="text-align:center">
+<h1 *ngIf="isEventTypeAvailable" class="text-align-center">
   <span
     style="
   color: #e57d13;
@@ -9,9 +9,12 @@
   Better Mood
 </h1>
 
-<h3 style="text-align:center">
+<h3 *ngIf="isEventTypeAvailable" class="text-align-center">
   Please join us for food and fun as we celebrate at {{ nameEvent }}
 </h3>
+<h1 *ngIf="!isEventTypeAvailable" class="text-align-center">
+  Event is not available 
+</h1>
 
 <div *ngIf="isDataAvailable" class="aaa">
   <app-food

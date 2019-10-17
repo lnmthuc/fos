@@ -53,7 +53,7 @@ export class OrderDetailComponent implements OnInit {
   eventPromotion: EventPromotion;
   promotions: Promotion[] = [];
   discountPerItem: Promotion;
-
+  isEventTypeAvailable = true;
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
@@ -66,7 +66,6 @@ export class OrderDetailComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-   
     this.data = { restaurant: null, detail: null, idService: 1 };
     this.idOrder = this.route.snapshot.paramMap.get("id");
     this.isWildParticipant = false;
@@ -83,6 +82,7 @@ export class OrderDetailComponent implements OnInit {
             }
           });
       });
+      
       this.isWildParticipant = true;
       this.eventFormService.GetEventById(eventId).then(event => {
         if (event && event.EventType === 'Open') {
@@ -140,6 +140,9 @@ export class OrderDetailComponent implements OnInit {
                     });
                 });
             });
+        } else {
+          this.loading = false;
+          this.isEventTypeAvailable = false;
         }
       });
     } else {

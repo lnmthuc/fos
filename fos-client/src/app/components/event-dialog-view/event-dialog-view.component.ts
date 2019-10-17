@@ -38,6 +38,7 @@ export class EventDialogViewComponent implements OnInit {
   ) {}
   apiUrl = environment.apiUrl;
   eventTitle = '';
+  eventType = '';
   eventHost = '';
   eventRestaurant = '';
   maximumBudget = '';
@@ -57,7 +58,6 @@ export class EventDialogViewComponent implements OnInit {
 
     this.orderService.GetOrdersByEventId(this.data.EventId).then((order: Array<Order>) =>{
       order.forEach(o=>{
-
         const userNotOrder: GraphUser[] = participants.filter(p =>p.Mail == o.Email);
         if(o.OrderStatus == 0){
           const UserNot: EventUser ={
@@ -113,8 +113,8 @@ export class EventDialogViewComponent implements OnInit {
     //   })
     // })
 
-
     this.eventTitle = this.data.Name;
+    this.eventType = this.data.EventType === 'Open' ? 'Free To Join' : 'Invited Only';
     this.eventHost = this.data.HostName;
     this.eventRestaurant = this.data.Restaurant;
     this.maximumBudget = this.data.MaximumBudget.toString();

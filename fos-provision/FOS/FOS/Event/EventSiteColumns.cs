@@ -15,6 +15,8 @@ namespace FOS
             {
                 Web rootWeb = clientContext.Site.RootWeb;
 
+                clientContext.Load(rootWeb);
+                clientContext.ExecuteQuery();
                 if (Helper.CheckHelper.isExist_Helper(clientContext, "Event Id", "field") == 0)
                 {
                     rootWeb.Fields.AddFieldAsXml("<Field DisplayName='Event Id' Name='EventId' Group='Event Column' Type='Text' />", false, AddFieldOptions.AddFieldInternalNameHint);

@@ -1,63 +1,71 @@
-<form class="example-form" [formGroup]="recForm">
-  <section fxLayout="row wrap" fxLayoutAlign="center center">
-    <mat-card fxFlex="500px" fxFlex.xs="100%">
-      <mat-card-title>Setting My Reminder</mat-card-title>
-
-      <mat-form-field>
-        <mat-label>Title</mat-label>
-
-        <input
-          matInput
-          formControlName="titleInput"
-          type="text"
-          placeholder="EventTitle"
-          required
-        />
-        <mat-hint align="end">Event title is required.</mat-hint>
-      </mat-form-field>
-      <app-datetimepicker
-        [formGroup]="recForm"
-        [formLable]="'Start'"
-        [userTime]="startDate"
-        dateFormControlName="startInput"
-        timeFormControlName="startTimeInput"
-      ></app-datetimepicker>
-      <app-datetimepicker
-        [formGroup]="recForm"
-        [formLable]="'End'"
-        [userTime]="endDate"
-        dateFormControlName="endInput"
-        timeFormControlName="endTimeInput"
-      ></app-datetimepicker>
-      <mat-form-field>
-        <mat-label>Repeat</mat-label>
-        <mat-select formControlName="selectRepeatType">
-          <mat-option *ngFor="let symbol of nameRepeatType" [value]="symbol">
-            {{ symbol }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-card-actions align="right">
-        <button
-          mat-flat-button
-          color="primary"
-          (click)="getAllValue()"
-          class="mid"
-        >
-          Save
-        </button>
-        <button
-          mat-flat-button
-          color="warn"
-          (click)="removeRecurrenceEvent()"
-          class="mid"
-        >
-          Remove this reminder
-        </button>
-        <button mat-stroked-button (click)="onNoClick()" class="mid">
-          Cancel
-        </button>
-      </mat-card-actions>
-    </mat-card>
-  </section>
-</form>
+<mat-tab-group>
+  <mat-tab label="Permission Setting">
+    <app-permission-setting-dialog></app-permission-setting-dialog>
+  </mat-tab>
+  <mat-tab label="Reminder Setting"
+    ><form class="example-form" [formGroup]="recForm">
+      <section fxLayout="row wrap" fxLayoutAlign="center center">
+        <mat-card fxFlex="500px" fxFlex.xs="100%">
+          <mat-card-title>Setting My Reminder</mat-card-title>
+          <mat-form-field>
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              formControlName="titleInput"
+              type="text"
+              placeholder="EventTitle"
+              required
+            />
+            <mat-hint align="end">Event title is required.</mat-hint>
+          </mat-form-field>
+          <app-datetimepicker
+            [formGroup]="recForm"
+            [formLable]="'Start'"
+            [userTime]="startDate"
+            dateFormControlName="startInput"
+            timeFormControlName="startTimeInput"
+          ></app-datetimepicker>
+          <app-datetimepicker
+            [formGroup]="recForm"
+            [formLable]="'End'"
+            [userTime]="endDate"
+            dateFormControlName="endInput"
+            timeFormControlName="endTimeInput"
+          ></app-datetimepicker>
+          <mat-form-field>
+            <mat-label>Repeat</mat-label>
+            <mat-select formControlName="selectRepeatType">
+              <mat-option
+                *ngFor="let symbol of nameRepeatType"
+                [value]="symbol"
+              >
+                {{ symbol }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-card-actions align="right">
+            <button
+              mat-flat-button
+              color="primary"
+              (click)="getAllValue()"
+              class="mid"
+            >
+              Save
+            </button>
+            <button
+              mat-flat-button
+              color="warn"
+              (click)="removeRecurrenceEvent()"
+              class="mid"
+            >
+              Remove this reminder
+            </button>
+            <button mat-stroked-button (click)="onNoClick()" class="mid">
+              Cancel
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </section>
+    </form></mat-tab
+  >
+</mat-tab-group>

@@ -77,7 +77,7 @@ export class EventDialogUserpickerComponent implements OnInit {
           )
         )
       )
-      .subscribe((data: ApiOperationResult<Array<User>>) => {
+      .subscribe((data: ApiOperationResult<Array<Group>>) => {
         if (data && data.Data) {
           const dataSourceTemp: UserPicker[] = [];
           //console.log(data.Data);
@@ -89,7 +89,7 @@ export class EventDialogUserpickerComponent implements OnInit {
                 Email: user.Mail,
                 Img: '',
                 Id: user.Id,
-                IsGroup: 0
+                IsGroup: 0,
               });
             }
           });

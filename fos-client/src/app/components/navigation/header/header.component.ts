@@ -55,7 +55,7 @@ export class HeaderComponent implements OnInit {
       scrollStrategy: this.overlay.scrollStrategies.noop(),
       autoFocus: false,
       maxHeight: '98vh',
-      maxWidth: '80%',
+      minWidth: '80vh',
       data: this.user
     });
 

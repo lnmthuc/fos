@@ -117,6 +117,8 @@ import { AddPromotionDialogComponent } from "./components/event-summary-dialog/a
 import { BehaviorSubject } from "rxjs";
 import { DataRoutingService } from "./data-routing.service";
 import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dishes-dialog/summary-dishes-diaglog-feedback/summary-dishes-diaglog-feedback.component';
+import { PermissionSettingDialogComponent } from './components/navigation/header/permission-setting-dialog/permission-setting-dialog.component';
+import { PermissionSearchMutipeopleComponent } from './components/navigation/header/permission-setting-dialog/permission-search-mutipeople/permission-search-mutipeople.component';
 
 @NgModule({
   declarations: [
@@ -176,7 +178,9 @@ import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dish
     CreateUpdateCustomGroupComponent,
     NoPromotionsNotificationComponent,
     AddPromotionDialogComponent,
-    SummaryDishesDiaglogFeedbackComponent
+    SummaryDishesDiaglogFeedbackComponent,
+    PermissionSettingDialogComponent,
+    PermissionSearchMutipeopleComponent,
   ],
   // declarations: [
   //     AppComponent,
@@ -233,7 +237,7 @@ import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dish
     LightboxModule,
     MatExpansionModule,
     MatDatepickerModule, // <----- import(must)
-    MatNativeDateModule // <----- import for date formating(optional)
+    MatNativeDateModule, // <----- import for date formating(optional),
   ],
   providers: [
     DataRoutingService,

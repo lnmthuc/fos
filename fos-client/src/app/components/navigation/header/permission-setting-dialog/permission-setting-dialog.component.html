@@ -1,0 +1,26 @@
+<section fxLayout="row wrap" fxLayoutAlign="center">
+    <mat-card fxFlex="500px" fxFlex.xs="100%">
+      <mat-card-title>Add User To Admin Role</mat-card-title>
+  
+      <form
+        autocomplete="off"
+      >
+        <div class="tp-container">
+        <app-permission-search-mutipeople></app-permission-search-mutipeople>
+          <mat-card-actions align="right">
+            <button
+              mat-flat-button
+              color="primary"
+            >
+              Create
+            </button>
+            <button type="button" mat-stroked-button>
+              Cancel
+            </button>
+          </mat-card-actions>
+        </div>
+      </form>
+    </mat-card>
+  </section>
+  
+  <app-loading [loading]="loading"></app-loading>

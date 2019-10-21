@@ -39,6 +39,8 @@ namespace FOS.Model.Domain
         [JsonProperty("userPrincipalName")]
 
         public string UserPrincipalName { get; set; }
+
+        public string LoginName { get; set; }
         //public List<string> businessPhones { get; set; }
     }
 }

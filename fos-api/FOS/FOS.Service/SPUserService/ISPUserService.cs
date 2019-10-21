@@ -22,5 +22,8 @@ namespace FOS.Services.SPUserService
         Task<bool> ValidateIsHost(int eventId);
         Microsoft.SharePoint.Client.User GetUserByMail(string mail);
         Microsoft.SharePoint.Client.ClientResult<Microsoft.SharePoint.Client.Utilities.PrincipalInfo> GetUserPrincipalInfoByMail(string mail);
+        List<Model.Domain.User> SiteGroupListMembers(string groupName);
+        Task<bool> SiteGroupAddMembers(Model.Domain.User addUser);
+        bool SiteGroupCheckMemberExists(Model.Domain.User User);
     }
 }

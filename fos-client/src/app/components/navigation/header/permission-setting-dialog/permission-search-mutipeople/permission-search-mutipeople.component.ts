@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {
@@ -26,6 +26,8 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
 
   filteredUsers: Array<Group>;
   loading = false;
+  @Output() ListenChildComponentEvent = new EventEmitter<Array<Group>>();
+
   constructor(private eventFormService: EventFormService) {}
   ngOnInit() {
     this.userControl.valueChanges
@@ -51,14 +53,11 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
             } else {
               u.IsSelected = false;
               filterList.push(u);
+              this.userControl.setValue(null);
             }
           }
         });
         this.filteredUsers = filterList;
-        console.log('search done');
-        if (this.userControl.value === '') {
-          this.loading = false;
-        }
       });
   }
 
@@ -80,6 +79,7 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
      const checkUser: Group = this.selectedUsers.find( u => u.Mail === user.Mail);
      if (checkUser === undefined) {
       this.selectedUsers.push(user);
+      this.ListenChildComponentEvent.emit(this.selectedUsers);
       this.userControl.setValue(null);
      }
     }

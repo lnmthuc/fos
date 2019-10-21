@@ -37,6 +37,7 @@ export class ListOrderComponent implements OnInit, OnChanges {
   isLoading = true;
   currency = 'đ';
   userId: string;
+  User: User;
   allOrder: Event[];
   myOrder: Event[];
   myOrderCategories = [];
@@ -69,6 +70,7 @@ export class ListOrderComponent implements OnInit, OnChanges {
     this.dataSource.paginator = this.paginator;
     this.userService.getCurrentUser().then((response: User) => {
       this.userId = response.Id;
+      this.User = response;
       this.getAllEvent();
     });
   }
@@ -97,7 +99,8 @@ export class ListOrderComponent implements OnInit, OnChanges {
   }
 
   getAllEvent() {
-    this.orderService.getAllEvent(this.userId).then(response => {
+
+    this.orderService.getAllEvent(this.User).then(response => {
       this.allOrder = response;
       if (response !== null && response.length > 0) {
         this.myOrder = this.allOrder.filter(item => {

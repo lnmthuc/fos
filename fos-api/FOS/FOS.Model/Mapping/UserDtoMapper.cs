@@ -21,7 +21,8 @@ namespace FOS.Model.Mapping
                 Mail = user.Mail,
                 MobilePhone = user.MobilePhone,
                 OfficeLocation = user.OfficeLocation,
-                PreferredLanguage = user.PreferredLanguage
+                PreferredLanguage = user.PreferredLanguage,
+                LoginName = user.LoginName
             };
         }
         public Domain.User ToDomain(Dto.User user)
@@ -37,7 +38,8 @@ namespace FOS.Model.Mapping
                 Mail = user.Mail,
                 MobilePhone = user.MobilePhone,
                 OfficeLocation = user.OfficeLocation,
-                PreferredLanguage = user.PreferredLanguage
+                PreferredLanguage = user.PreferredLanguage,
+                LoginName = user.LoginName
             };
         }
     }

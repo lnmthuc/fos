@@ -28,8 +28,8 @@
 <mat-autocomplete #auto="matAutocomplete">
   <mat-option *ngFor="let user of filteredUsers" [value]="user">
     <div (click)="optionClicked($event, user)">
-      <mat-checkbox [checked]="user.IsSelected">
-        {{user.Mail}}
+      <mat-checkbox [checked]="user.IsSelected" >
+          {{user.Mail}}
       </mat-checkbox>
     </div>
   </mat-option>

@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using FOS.Model.Domain;
 using FOS.Services.EventServices;
+using Microsoft.SharePoint.Client;
+using Group = Microsoft.SharePoint.Client.Group;
 
 namespace FOS.Services.SPUserService
 {
@@ -186,9 +188,9 @@ namespace FOS.Services.SPUserService
                 throw new Exception(await result.Content.ReadAsStringAsync());
             }
         }
-        public async Task<List<User>> SearchGroupOrUserByName(string searchName)
+        public async Task<List<Model.Domain.User>> SearchGroupOrUserByName(string searchName)
         {
-            List<Model.Domain.User> listSearchUser = new List<User>();
+            List<Model.Domain.User> listSearchUser = new List<Model.Domain.User>();
             String queryString = String.Format("users?$filter=startswith(displayName,'{0}')", searchName);
             var resultSearchUser = await _graphApiProvider.SendAsync(HttpMethod.Get, queryString, null);
 
@@ -209,7 +211,7 @@ namespace FOS.Services.SPUserService
                 throw new Exception(await resultSearchUser.Content.ReadAsStringAsync());
             }
 
-            List<Model.Domain.User> listSearchGroup = new List<User>();
+            List<Model.Domain.User> listSearchGroup = new List<Model.Domain.User>();
             String queryStringGroup = String.Format("groups?$filter=startswith(displayName,'{0}')", searchName);
             var resultSearchGroup = await _graphApiProvider.SendAsync(HttpMethod.Get, queryStringGroup, null);
 
@@ -240,7 +242,7 @@ namespace FOS.Services.SPUserService
                 Event eventInfo =  _eventService.GetEvent(eventId);
                 var hostId = eventInfo.HostId;
                 //get current user
-                User currentUser = await GetCurrentUser();
+                Model.Domain.User currentUser = await GetCurrentUser();
 
                 if(hostId != currentUser.Id)
                 {
@@ -276,6 +278,90 @@ namespace FOS.Services.SPUserService
                 context.ExecuteQuery();
 
                 return result;
+            }
+        }
+        public List<Model.Domain.User> SiteGroupListMembers(string groupName)
+        {
+            try
+            {
+                using (var context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
+                {
+                    List<Model.Domain.User> listUser = new List<Model.Domain.User>();
+                    Web web = context.Web;
+                    Microsoft.SharePoint.Client.Group group = web.SiteGroups.GetByName(groupName);
+                    context.Load(web, w => w.Title);
+                    context.Load(group, grp => grp.Users);
+                    context.ExecuteQuery();
+                    foreach (Microsoft.SharePoint.Client.User usr in group.Users)
+                    {
+                        if (usr.Email != "")
+                        {
+                            Model.Domain.User newUserInfo = new Model.Domain.User();
+                            newUserInfo.Mail = usr.Email;
+                            newUserInfo.DisplayName = usr.Title;
+                            newUserInfo.LoginName = usr.LoginName;
+                            listUser.Add(newUserInfo);
+                        }                    }
+                    if(listUser.Count > 0)
+                    {
+                        return listUser;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public async Task<bool> SiteGroupAddMembers(Model.Domain.User addUser)
+        {
+            try
+            {
+                using (var context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
+                {
+                    GroupCollection Groups = context.Web.SiteGroups;
+                    Group ownersGroup = Groups.GetByName(Common.Constants.Constant.AdminGroupName);
+                    Microsoft.SharePoint.Client.User newUser = context.Web.EnsureUser(addUser.Mail);
+                    ownersGroup.Users.AddUser(newUser);
+                    context.ExecuteQuery();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public bool SiteGroupCheckMemberExists(Model.Domain.User checkUser)
+        {
+            try
+            {
+                bool check = false;
+
+                List<Model.Domain.User> listUser = SiteGroupListMembers(Common.Constants.Constant.AdminGroupName);
+                if(listUser != null && listUser.Count > 0)
+                {
+                    foreach (Model.Domain.User usr in listUser)
+                    {
+                        if (usr.Mail == checkUser.Mail)
+                        {
+                            return true;
+                        }
+                    }
+                    return check;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                throw e;
             }
         }
     }

@@ -6,15 +6,16 @@
         autocomplete="off"
       >
         <div class="tp-container">
-        <app-permission-search-mutipeople></app-permission-search-mutipeople>
+        <app-permission-search-mutipeople (ListenChildComponentEvent)="notifyMessage($event)"></app-permission-search-mutipeople>
           <mat-card-actions align="right">
             <button
               mat-flat-button
               color="primary"
+              (click)="getMemberAdminGroup()"
             >
-              Create
+              Add
             </button>
-            <button type="button" mat-stroked-button  (click) ="onNoClick()">
+            <button type="button" mat-stroked-button (click) ="onNoClick()">
               Cancel
             </button>
           </mat-card-actions>

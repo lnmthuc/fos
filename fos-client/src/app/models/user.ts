@@ -21,6 +21,7 @@
         public OfficeLocation: string = null;   
         public PreferredLanguage: string = null;   
         public Surname: string = null;   
-        public UserPrincipalName: string = null;
+        public UserPrincipalName: string = null;   
+        public LoginName: string = null;
     }
          

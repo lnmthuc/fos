@@ -12,6 +12,7 @@ import {
 } from 'rxjs/operators';
 import { EventFormService } from 'src/app/services/event-form/event-form.service';
 import { Group } from 'src/app/models/group';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-permission-search-mutipeople',
@@ -76,8 +77,19 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
     }
       this.userControl.setValue(null);
    } else {
-    this.selectedUsers.push(user);
-    this.userControl.setValue(null);
+     const checkUser: Group = this.selectedUsers.find( u => u.Mail === user.Mail);
+     if (checkUser === undefined) {
+      this.selectedUsers.push(user);
+      this.userControl.setValue(null);
+     }
+    }
+  }
+  removeUser(user: Group) {
+    for ( let i = 0; i < this.selectedUsers.length; i++) {
+      if ( this.selectedUsers[i].Mail === user.Mail) {
+        this.selectedUsers.splice(i, 1);
+        i--;
+      }
     }
   }
 }

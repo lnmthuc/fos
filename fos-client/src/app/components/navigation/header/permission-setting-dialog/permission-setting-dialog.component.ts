@@ -65,7 +65,6 @@ export class PermissionSettingDialogComponent implements OnInit {
     // });
     Promise.all(promises)
       .then(result => {
-        debugger;
         currentUser.forEach(element => {
           const user: User = this.selectedUser.find(u => u.Mail === element.Mail);
           if (user === undefined) {

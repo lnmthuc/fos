@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { MAT_DIALOG_DATA, MatTable } from '@angular/material';
+import { MAT_DIALOG_DATA, MatTable, MatSnackBar } from '@angular/material';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { debug } from 'util';
@@ -13,8 +13,8 @@ export class PermissonSettingUsetableComponent implements OnInit {
   @Output() ListenChildComponentEvent = new EventEmitter<Array<User>>();
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   tbSource: User[];
-  displayedColumns = ['Name', 'Email','Delete'];
-  constructor(private userService: UserService) {
+  displayedColumns = ['Name', 'Email', 'Delete'];
+  constructor(private userService: UserService, private snackBar: MatSnackBar) {
     const self = this;
     const groupName = 'FOS Owners';
     this.userService
@@ -29,14 +29,18 @@ export class PermissonSettingUsetableComponent implements OnInit {
   }
 
   DeleteUser( user: User) {
-    for (let j = 0; j < this.tbSource.length; j++) {
-      if (user.Mail === this.tbSource[j].Mail) {
-        this.tbSource.splice(j, 1);
-        j--;
-        this.table.renderRows();
+    if (this.tbSource.length === 1) {
+      this.toast('System must have at least one admin', 'Dimiss');
+    } else {
+      for (let j = 0; j < this.tbSource.length; j++) {
+        if (user.Mail === this.tbSource[j].Mail) {
+          this.tbSource.splice(j, 1);
+          j--;
+          this.table.renderRows();
+        }
       }
+      this.ListenChildComponentEvent.emit(this.tbSource);
     }
-    this.ListenChildComponentEvent.emit(this.tbSource);
   }
   notifyMessage(data: Array<User>) {
     this.addUserToTable(data);
@@ -50,5 +54,10 @@ export class PermissonSettingUsetableComponent implements OnInit {
     });
     this.ListenChildComponentEvent.emit(this.tbSource);
     this.table.renderRows();
+  }
+  toast(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 3000
+    });
   }
 }

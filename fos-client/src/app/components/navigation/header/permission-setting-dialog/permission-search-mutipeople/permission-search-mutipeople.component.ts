@@ -13,6 +13,7 @@ import {
 import { EventFormService } from 'src/app/services/event-form/event-form.service';
 import { Group } from 'src/app/models/group';
 import { User } from 'src/app/models/user';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-permission-search-mutipeople',
@@ -26,9 +27,13 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
 
   filteredUsers: Array<Group>;
   loading = false;
+  tableDatasource: User[] = [];
+
+
   @Output() ListenChildComponentEvent = new EventEmitter<Array<Group>>();
 
-  constructor(private eventFormService: EventFormService) {}
+  constructor(private eventFormService: EventFormService, private userService: UserService) {
+  }
   ngOnInit() {
     this.userControl.valueChanges
       .pipe(
@@ -53,7 +58,7 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
             } else {
               u.IsSelected = false;
               filterList.push(u);
-              this.userControl.setValue(null);
+              // this.userControl.setValue(null);
             }
           }
         });

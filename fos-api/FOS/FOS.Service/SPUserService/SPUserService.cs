@@ -364,5 +364,26 @@ namespace FOS.Services.SPUserService
                 throw e;
             }
         }
+        public async Task<bool> SiteGroupRemoveMembers(Model.Domain.User removeUser)
+        {
+            try
+            {
+                using (var context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
+                {
+                    GroupCollection Groups = context.Web.SiteGroups;
+                    Group ownersGroup = Groups.GetByName(Common.Constants.Constant.AdminGroupName);
+                    Microsoft.SharePoint.Client.User user = context.Web.EnsureUser(removeUser.Mail);
+                    context.Load(user);
+                    context.ExecuteQuery();
+                    ownersGroup.Users.RemoveByLoginName(user.LoginName);
+                    context.ExecuteQuery();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

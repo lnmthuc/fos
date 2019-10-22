@@ -1,9 +1,11 @@
 <mat-tab-group>
-  <mat-tab label="Permission Setting">
+    
+  <mat-tab label="Permission Setting" *ngIf="isAdminRole">
     <app-permission-setting-dialog></app-permission-setting-dialog>
   </mat-tab>
-  <mat-tab label="Reminder Setting"
-    ><form class="example-form" [formGroup]="recForm">
+  <mat-tab label="Reminder Setting">
+    <app-loading [loading]="loading"></app-loading>
+    <form class="example-form" [formGroup]="recForm">
       <section fxLayout="row wrap" fxLayoutAlign="center center">
         <mat-card fxFlex="500px" fxFlex.xs="100%">
           <mat-card-title>Setting My Reminder</mat-card-title>
@@ -43,7 +45,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-card-actions align="right">
+          <div mat-dialog-actions align="end">
             <button
               mat-flat-button
               color="primary"
@@ -63,9 +65,10 @@
             <button mat-stroked-button (click)="onNoClick()" class="mid">
               Cancel
             </button>
-          </mat-card-actions>
+          </div>
         </mat-card>
       </section>
     </form></mat-tab
   >
+  
 </mat-tab-group>

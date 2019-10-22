@@ -215,7 +215,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-card-actions align="right">
+        <div mat-dialog-actions align="end">
           <button
             mat-flat-button
             color="primary"
@@ -227,7 +227,7 @@
           <button type="button" mat-stroked-button (click)="OnNoClick()">
             Cancel
           </button>
-        </mat-card-actions>
+        </div>
       </div>
     </form>
   </mat-card>

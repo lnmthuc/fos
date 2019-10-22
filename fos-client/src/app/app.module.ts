@@ -119,6 +119,7 @@ import { DataRoutingService } from "./data-routing.service";
 import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dishes-dialog/summary-dishes-diaglog-feedback/summary-dishes-diaglog-feedback.component';
 import { PermissionSettingDialogComponent } from './components/navigation/header/permission-setting-dialog/permission-setting-dialog.component';
 import { PermissionSearchMutipeopleComponent } from './components/navigation/header/permission-setting-dialog/permission-search-mutipeople/permission-search-mutipeople.component';
+import { PermissonSettingUsetableComponent } from './components/navigation/header/permission-setting-dialog/permisson-setting-usetable/permisson-setting-usetable.component';
 
 @NgModule({
   declarations: [
@@ -181,6 +182,7 @@ import { PermissionSearchMutipeopleComponent } from './components/navigation/hea
     SummaryDishesDiaglogFeedbackComponent,
     PermissionSettingDialogComponent,
     PermissionSearchMutipeopleComponent,
+    PermissonSettingUsetableComponent,
   ],
   // declarations: [
   //     AppComponent,
@@ -269,7 +271,8 @@ import { PermissionSearchMutipeopleComponent } from './components/navigation/hea
     UsersOrderedFoodDialogComponent,
     OpenEventDialogComponent,
     MatChipsModule,
-    NoPromotionsNotificationComponent
+    NoPromotionsNotificationComponent,
+    PermissonSettingUsetableComponent
   ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -291,7 +294,8 @@ import { PermissionSearchMutipeopleComponent } from './components/navigation/hea
     UsersOrderedFoodDialogComponent,
     NoPromotionsNotificationComponent,
     AddPromotionDialogComponent,
-    SummaryDishesDiaglogFeedbackComponent
+    SummaryDishesDiaglogFeedbackComponent,
+    PermissonSettingUsetableComponent
   ]
 })
 export class AppModule {}

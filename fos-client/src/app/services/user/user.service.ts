@@ -76,4 +76,26 @@ export class UserService {
         })
       );
   }
+  SiteGroupCheckAdmin(
+    user: User
+  ): Observable<ApiOperationResult<boolean>> {
+    return this.http
+      .post(environment.apiUrl + "api/SPUser/SiteGroupCheckAdmin", user)
+      .pipe(
+        tap((response: ApiOperationResult<boolean>) => {
+          return response;
+        })
+      );
+  }
+  SiteGroupRemoveMembers(
+    user: User
+  ): Observable<ApiOperationResult<void>> {
+    return this.http
+      .post(environment.apiUrl + "api/SPUser/SiteGroupRemoveMembers", user)
+      .pipe(
+        tap((response: ApiOperationResult<void>) => {
+          return response;
+        })
+      );
+  }
 }

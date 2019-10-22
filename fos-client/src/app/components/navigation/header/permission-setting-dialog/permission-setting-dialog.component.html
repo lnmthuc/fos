@@ -1,19 +1,19 @@
 <section fxLayout="row wrap" fxLayoutAlign="center">
-    <mat-card fxFlex="500px" fxFlex.xs="100%">
+    <mat-card>
       <mat-card-title>Add User To Admin Role</mat-card-title>
   
       <form
         autocomplete="off"
       >
         <div class="tp-container">
-        <app-permission-search-mutipeople (ListenChildComponentEvent)="notifyMessage($event)"></app-permission-search-mutipeople>
+        <app-permisson-setting-usetable (ListenChildComponentEvent)="notifyMessage($event)"></app-permisson-setting-usetable>
           <mat-card-actions align="right">
             <button
               mat-flat-button
               color="primary"
               (click)="getMemberAdminGroup()"
             >
-              Add
+              Update
             </button>
             <button type="button" mat-stroked-button (click) ="onNoClick()">
               Cancel

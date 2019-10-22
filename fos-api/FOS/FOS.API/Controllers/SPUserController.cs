@@ -206,5 +206,35 @@ namespace FOS.API.Controllers
                 return ApiUtil.CreateFailResult(e.ToString());
             }
         }
+        [HttpPost]
+        [Route("SiteGroupCheckAdmin")]
+        public async Task<ApiResponse<bool>> SiteGroupCheckAdmin([FromBody]Model.Dto.User User)
+        {
+            try
+            {
+                Model.Domain.User addUser = _userDtoMapper.ToDomain(User);
+                bool check =  _sPUserService.SiteGroupCheckMemberExists(addUser);
+                return ApiUtil<bool>.CreateSuccessfulResult(check);
+            }
+            catch (Exception e)
+            {
+                return ApiUtil<bool>.CreateFailResult(e.ToString());
+            }
+        }
+        [HttpPost]
+        [Route("SiteGroupRemoveMembers")]
+        public async Task<ApiResponse> SiteGroupRemoveMembers([FromBody]Model.Dto.User User)
+        {
+            try
+            {
+                Model.Domain.User removeUser = _userDtoMapper.ToDomain(User);
+                await _sPUserService.SiteGroupRemoveMembers(removeUser);
+                return ApiUtil.CreateSuccessfulResult();
+            }
+            catch (Exception e)
+            {
+                return ApiUtil.CreateFailResult(e.ToString());
+            }
+        }
     }
 }

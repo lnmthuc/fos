@@ -25,5 +25,6 @@ namespace FOS.Services.SPUserService
         List<Model.Domain.User> SiteGroupListMembers(string groupName);
         Task<bool> SiteGroupAddMembers(Model.Domain.User addUser);
         bool SiteGroupCheckMemberExists(Model.Domain.User User);
+        Task<bool> SiteGroupRemoveMembers(Model.Domain.User removeUser);
     }
 }

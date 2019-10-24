@@ -6,7 +6,7 @@
         autocomplete="off"
       >
         <div class="tp-container">
-        <app-permisson-setting-usetable (ListenChildComponentEvent)="notifyMessage($event)"></app-permisson-setting-usetable>
+        <app-permisson-setting-usetable (ListenChildComponentEvent)="notifyMessage($event)" [SettingType]="SettingType"></app-permisson-setting-usetable>
           <mat-card-actions align="right">
             <button
               mat-flat-button

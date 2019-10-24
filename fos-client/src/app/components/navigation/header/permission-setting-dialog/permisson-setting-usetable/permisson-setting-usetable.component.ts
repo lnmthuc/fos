@@ -3,6 +3,8 @@ import { MAT_DIALOG_DATA, MatTable, MatSnackBar } from '@angular/material';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
 import { debug } from 'util';
+import { environment } from 'src/environments/environment';
+import { Constant } from 'src/app/models/constant';
 
 @Component({
   selector: 'app-permisson-setting-usetable',
@@ -11,21 +13,27 @@ import { debug } from 'util';
 })
 export class PermissonSettingUsetableComponent implements OnInit {
   @Output() ListenChildComponentEvent = new EventEmitter<Array<User>>();
+  @Input() SettingType: string;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
   tbSource: User[];
-  displayedColumns = ['Name', 'Email', 'Delete'];
+  displayedColumns = ['Avatar', 'Name', 'Email', 'Delete'];
+  apiUrl = environment.apiUrl;
   constructor(private userService: UserService, private snackBar: MatSnackBar) {
-    const self = this;
-    const groupName = 'FOS Owners';
-    this.userService
-      .SiteGroupListMemers(groupName)
-      .toPromise()
-      .then(u => {
-        self.tbSource = u.Data;
-      });
   }
 
   ngOnInit() {
+    const type = this.SettingType;
+    const self = this;
+    this.tbSource = [];
+    if (type !== undefined && type === Constant.Permission) {
+      const groupName = Constant.groupName;
+      this.userService
+        .SiteGroupListMemers(groupName)
+        .toPromise()
+        .then(u => {
+          self.tbSource = u.Data;
+        });
+    }
   }
 
   DeleteUser( user: User) {
@@ -46,12 +54,18 @@ export class PermissonSettingUsetableComponent implements OnInit {
     this.addUserToTable(data);
   }
   addUserToTable(user: Array<User>) {
-    user.forEach( usr => {
-      const newUser: User = this.tbSource.find(u => u.Mail === usr.Mail);
-      if (newUser === undefined) {
+    if ( this.tbSource !== null) {
+      user.forEach( usr => {
+        const newUser: User = this.tbSource.find(u => u.Mail === usr.Mail);
+        if (newUser === undefined) {
+          this.tbSource.push(usr);
+        }
+      });
+    } else {
+      user.forEach( usr => {
         this.tbSource.push(usr);
-      }
-    });
+      });
+    }
     this.ListenChildComponentEvent.emit(this.tbSource);
     this.table.renderRows();
   }

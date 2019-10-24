@@ -120,6 +120,7 @@ import { SummaryDishesDiaglogFeedbackComponent } from './components/summary-dish
 import { PermissionSettingDialogComponent } from './components/navigation/header/permission-setting-dialog/permission-setting-dialog.component';
 import { PermissionSearchMutipeopleComponent } from './components/navigation/header/permission-setting-dialog/permission-search-mutipeople/permission-search-mutipeople.component';
 import { PermissonSettingUsetableComponent } from './components/navigation/header/permission-setting-dialog/permisson-setting-usetable/permisson-setting-usetable.component';
+import { DelegateSettingDialogComponent } from './components/navigation/header/delegate-setting-dialog/delegate-setting-dialog.component';
 
 @NgModule({
   declarations: [
@@ -183,6 +184,7 @@ import { PermissonSettingUsetableComponent } from './components/navigation/heade
     PermissionSettingDialogComponent,
     PermissionSearchMutipeopleComponent,
     PermissonSettingUsetableComponent,
+    DelegateSettingDialogComponent,
   ],
   // declarations: [
   //     AppComponent,

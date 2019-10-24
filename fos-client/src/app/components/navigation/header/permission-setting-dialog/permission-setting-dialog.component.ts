@@ -15,6 +15,7 @@ import { User } from "src/app/models/user";
 import { Group } from "src/app/models/group";
 import { element } from 'protractor';
 import { debug } from 'util';
+import { Constant } from 'src/app/models/constant';
 @Component({
   selector: "app-permission-setting-dialog",
   templateUrl: "./permission-setting-dialog.component.html",
@@ -22,6 +23,7 @@ import { debug } from 'util';
 })
 export class PermissionSettingDialogComponent implements OnInit {
   tableSource: User[] = [];
+  SettingType = Constant.Permission;
   ngOnInit() {}
   constructor(
     public dialogRef: MatDialogRef<PermissionSettingDialogComponent>,
@@ -103,7 +105,6 @@ export class PermissionSettingDialogComponent implements OnInit {
   }
 
   notifyMessage(data: any) {
-    console.log(data);
     this.selectedUser = data;
   }
 

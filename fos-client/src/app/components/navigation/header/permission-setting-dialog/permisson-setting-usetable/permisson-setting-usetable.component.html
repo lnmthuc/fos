@@ -3,6 +3,20 @@
         <app-permission-search-mutipeople (ListenChildComponentEvent)="notifyMessage($event)">
         </app-permission-search-mutipeople>
         <table mat-table [dataSource]="tbSource">
+                <ng-container matColumnDef="Avatar">
+                        <th mat-header-cell *matHeaderCellDef>Avatar</th>
+                        <td mat-cell *matCellDef="let element">
+                          <div class="avatar-padding">
+                            <img
+                              id="avatar"
+                              class="make-circle-avatar"
+                              src="{{ apiUrl }}api/SPUser/GetAvatar?Id={{
+                                element.Id
+                              }}&avatarName={{ element.DisplayName }}"
+                            />
+                          </div>
+                        </td>
+                      </ng-container>
             <ng-container matColumnDef="Name">
                 <th mat-header-cell *matHeaderCellDef>Name</th>
                 <td mat-cell *matCellDef="let element">{{ element.DisplayName }}</td>

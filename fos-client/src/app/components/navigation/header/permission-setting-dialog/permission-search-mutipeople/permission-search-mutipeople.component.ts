@@ -14,6 +14,7 @@ import { EventFormService } from 'src/app/services/event-form/event-form.service
 import { Group } from 'src/app/models/group';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user/user.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-permission-search-mutipeople',
@@ -28,7 +29,7 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
   filteredUsers: Array<Group>;
   loading = false;
   tableDatasource: User[] = [];
-
+  apiUrl = environment.apiUrl;
 
   @Output() ListenChildComponentEvent = new EventEmitter<Array<Group>>();
 
@@ -49,19 +50,21 @@ export class PermissionSearchMutipeopleComponent implements OnInit {
       )
       .subscribe((data: ApiOperationResult<Array<Group>>) => {
         const filterList: Group[] = [];
-        data.Data.forEach( u => {
-          if (u.Mail) {
-            const notExistUser: Group = this.selectedUsers.find(s => s.Mail === u.Mail);
-            if (notExistUser) {
-              notExistUser.IsSelected = true;
-              filterList.push(notExistUser);
-            } else {
-              u.IsSelected = false;
-              filterList.push(u);
-              // this.userControl.setValue(null);
+        if ( data.Data !== undefined || data.Data.length > 0 ) {
+          data.Data.forEach( u => {
+            if (u.Mail) {
+              const notExistUser: Group = this.selectedUsers.find(s => s.Mail === u.Mail);
+              if (notExistUser) {
+                notExistUser.IsSelected = true;
+                filterList.push(notExistUser);
+              } else {
+                u.IsSelected = false;
+                filterList.push(u);
+                // this.userControl.setValue(null);
+              }
             }
-          }
-        });
+          });
+        }
         this.filteredUsers = filterList;
       });
   }

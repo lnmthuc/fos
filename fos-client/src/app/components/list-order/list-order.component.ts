@@ -250,7 +250,8 @@ export class ListOrderComponent implements OnInit, OnChanges {
   }
   viewEvent(element: Event): void {
     const dialogRef = this.dialog.open(EventDialogViewComponent, {
-      maxHeight: '98vh',
+      maxHeight: '90vh',
+      minWidth: '80vw',
       data: element
     });
 

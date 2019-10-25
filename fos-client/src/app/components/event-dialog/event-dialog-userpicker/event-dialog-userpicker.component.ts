@@ -89,55 +89,66 @@ export class EventDialogUserpickerComponent implements OnInit {
         )
       )
       .subscribe((data: ApiOperationResult<Array<Group>>) => {
-        if (data && data.Data) {
-          self.showOption = false;
-          const dataSourceTemp: UserPicker[] = [];
-          data.Data.map(user => {
-            self.userService.getCurrentUser().then( usr => {
-              if ( user.Mail === usr.Mail) {
-                const currentUser = new UserPicker();
-                currentUser.Email = user.Mail;
-                currentUser.Id = user.Id;
-                currentUser.Name = user.DisplayName;
-                dataSourceTemp.push(currentUser);
-                if (dataSourceTemp.length > 0) {
-                  self.userHost = dataSourceTemp;
-                  self.showOption = true;
-                  self.isHostLoading = false;
-                }
-              } else {
-                const checkUser = new User();
-                checkUser.Mail = user.Mail;
-                self.delegateHostService
-                  .read(checkUser)
-                  .then(rs => {
-                    self.userService.getCurrentUser().then(current => {
-                      const findUser = rs.Data.DelegateUser.find(
-                        u => u.Mail === current.Mail
-                      );
-                      if (findUser !== undefined) {
-                        if (user.DisplayName) {
-                          dataSourceTemp.push({
-                            Name: user.DisplayName,
-                            Email: user.Mail,
-                            Img: "",
-                            Id: user.Id,
-                            IsGroup: 0
-                          });
-                          if (dataSourceTemp.length > 0) {
-                            self.userHost = dataSourceTemp;
-                            self.showOption = true;
+        if (data.Data !== undefined && data.Data != null) {
+          if (data.Data.length > 0) {
+            self.showOption = false;
+            const dataSourceTemp: UserPicker[] = [];
+            data.Data.map(user => {
+              self.userService.getCurrentUser().then(usr => {
+                if (user.Mail === usr.Mail) {
+                  const currentUser = new UserPicker();
+                  currentUser.Email = user.Mail;
+                  currentUser.Id = user.Id;
+                  currentUser.Name = user.DisplayName;
+                  dataSourceTemp.push(currentUser);
+                  if (dataSourceTemp.length > 0) {
+                    self.userHost = dataSourceTemp;
+                    self.showOption = true;
+                    self.isHostLoading = false;
+                  }
+                } else {
+                  const checkUser = new User();
+                  checkUser.Mail = user.Mail;
+                  self.delegateHostService
+                    .read(checkUser)
+                    .then(rs => {
+                      self.userService.getCurrentUser().then(current => {
+                        const findUser = rs.Data.DelegateUser.find(
+                          u => u.Mail === current.Mail
+                        );
+                        if (findUser !== undefined) {
+                          if (user.DisplayName) {
+                            dataSourceTemp.push({
+                              Name: user.DisplayName,
+                              Email: user.Mail,
+                              Img: '',
+                              Id: user.Id,
+                              IsGroup: 0
+                            });
+                            if (dataSourceTemp.length > 0) {
+                              self.userHost = dataSourceTemp;
+                              self.showOption = true;
+                              self.isHostLoading = false;
+                            }
                           }
+                        } else {
+                          self.showOption = false;
+                          self.isHostLoading = false;
                         }
-                      }
+                      });
+                    })
+                    .catch(err => {
+                      self.isHostLoading = false;
                     });
-                  })
-                  .catch(err => {});
-              }
+                }
+              });
             });
-          });
-          self.isHostLoading = false;
+          } else {
+            self.showOption = false;
+            self.isHostLoading = false;
+          }
         } else {
+          self.showOption = false;
           self.isHostLoading = false;
         }
       });

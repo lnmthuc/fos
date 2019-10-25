@@ -17,10 +17,39 @@ namespace FOS.Services.DelegateHostService
             _repository = repository;
         }
 
-        public DelegateHost Read(User userInfo)
+        public Model.Domain.DelegateHost Read(User userInfo)
         {
-            DelegateHost domain = _repository.Read(userInfo);
-            return domain;
+            try
+            {
+                Model.Domain.DelegateHost domain = _repository.Read(userInfo);
+                return domain;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public void Create(DelegateHost delegateHost)
+        {
+            try
+            {
+                _repository.Create(delegateHost);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public void Update(DelegateHost delegateHost)
+        {
+            try
+            {
+                _repository.Update(delegateHost);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

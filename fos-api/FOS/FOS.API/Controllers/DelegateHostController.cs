@@ -2,6 +2,7 @@
 using FOS.Model.Domain;
 using FOS.Model.Mapping;
 using FOS.Model.Util;
+using FOS.Repositories.Repositories;
 using FOS.Services.DelegateHostService;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,23 @@ namespace FOS.API.Controllers
         {
             try
             {
-                return ApiUtil.CreateSuccessfulResult();
+                Model.Domain.User currentUser = new Model.Domain.User();
+                currentUser.Mail = delegateInfo.Mail;
+                Model.Domain.DelegateHost currentList = _delegateHostService.Read(currentUser);
+                if(currentList == null)
+                {
+                    Guid id = Guid.NewGuid();
+                    delegateInfo.ID = id;
+                    Model.Domain.DelegateHost domain = _delegateHostDtoMapper.ToDomain(delegateInfo);
+                    _delegateHostService.Create(domain);
+                    return ApiUtil.CreateSuccessfulResult();
+                }
+                else
+                {
+                    Model.Domain.DelegateHost domain = _delegateHostDtoMapper.ToDomain(delegateInfo);
+                    _delegateHostService.Update(domain);
+                    return ApiUtil.CreateSuccessfulResult();
+                }
             }
             catch (Exception e)
             {
@@ -47,6 +64,10 @@ namespace FOS.API.Controllers
             {
                 Model.Domain.User domain = _userDtoMapper.ToDomain(userInfo);
                 Model.Domain.DelegateHost delegateHostDomain = _delegateHostService.Read(domain);
+                if(delegateHostDomain == null)
+                {
+                    return ApiUtil<Model.Dto.DelegateHost>.CreateFailResult(Common.Constants.DelegateHost.DelegateHostError);
+                }
                 Model.Dto.DelegateHost delegateHostDto = _delegateHostDtoMapper.ToDto(delegateHostDomain);
                 return ApiUtil<Model.Dto.DelegateHost>.CreateSuccessfulResult(delegateHostDto);
             }

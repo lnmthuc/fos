@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="APIResource.cs" />
     <Compile Include="Constants\Constant.cs" />
+    <Compile Include="Constants\DelegateHost.cs" />
     <Compile Include="Constants\EventConstant.cs" />
     <Compile Include="Constants\EventConstantWS.cs" />
     <Compile Include="Constants\EventEmail.cs" />

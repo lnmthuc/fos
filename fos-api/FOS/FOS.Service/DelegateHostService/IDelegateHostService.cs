@@ -10,5 +10,7 @@ namespace FOS.Services.DelegateHostService
     public interface IDelegateHostService
     {
         DelegateHost Read(User userInfo);
+        void Create(DelegateHost DelegateHost);
+        void Update(DelegateHost DelegateHost);
     }
 }

@@ -78,6 +78,7 @@ namespace FOS.API
             container.RegisterType<Repositories.Repositories.ICustomGroupRepository, Repositories.Repositories.CustomGroupRepository>();
             container.RegisterType<Repositories.Repositories.IRecurrenceEventRepository, Repositories.Repositories.RecurrenceEventRepository>();
             container.RegisterType<Repositories.Repositories.IOrderRepository, Repositories.Repositories.OrderRepository>();
+            container.RegisterType<Repositories.Repositories.IDelegateHostRepository, Repositories.Repositories.DelegateHostRepository>();
             container.RegisterType<Repositories.Infrastructor.IDbFactory, Repositories.Infrastructor.DbFactory>();
             container.RegisterType<Repositories.Repositories.IFOSFoodServiceAPIsRepository, Repositories.Repositories.FOSFoodServiceAPIsRepository>(
                 new TransientLifetimeManager(),

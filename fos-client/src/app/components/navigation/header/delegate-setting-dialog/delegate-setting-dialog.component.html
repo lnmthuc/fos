@@ -1,20 +1,19 @@
-<section fxLayout="row wrap" fxLayoutAlign="center">
   <mat-card>
     <mat-card-title>Add Delegate User</mat-card-title>
     <div class="tp-container">
       <app-permisson-setting-usetable [SettingType]=SettingType
         (ListenChildComponentEvent)="notifyMessage($event)"
       ></app-permisson-setting-usetable>
-      <mat-card-actions align="right">
-        <button mat-flat-button color="primary">
+      <app-loading [loading]="loading"></app-loading>
+      <div align="end" class="margin-top">
+        <button class="margin-right" mat-flat-button color="primary" (click)="onUpdateClick()">
           Update
         </button>
         <button type="button" mat-stroked-button (click)="onNoClick()">
           Cancel
         </button>
-      </mat-card-actions>
+      </div>
     </div>
   </mat-card>
-</section>
 
-<app-loading [loading]="loading"></app-loading>
+

@@ -247,7 +247,7 @@ export class OrderDetailComponent implements OnInit {
         }
       })
       .catch(error => this.toast(error, "Dismiss"));
-    this.router.navigate(['/home']);
+    this.router.navigate(['events/summary', this.order.IdEvent]);
   }
   deleteFoodFromMenu($event: FoodDetailJson) {
     this.foodlist.unChecked(this.foodlist.MapFoodDetail2Food($event));

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FeedbackService } from "src/app/services/feedback/feedback.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Restaurant } from "src/app/models/restaurant";
 import { RestaurantService } from "src/app/services/restaurant/restaurant.service";
 import { DeliveryInfos } from "src/app/models/delivery-infos";
@@ -28,7 +28,8 @@ export class FeedbackComponent implements OnInit {
     private restaurantService: RestaurantService,
     private orderService: OrderService,
     private eventFormService: EventFormService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
   restaurant: DeliveryInfos;
   orderId: string;
@@ -156,6 +157,7 @@ export class FeedbackComponent implements OnInit {
 
     this.feedbackService.feedBackEvent(this.feedback).then(result => {
       this.toast('Feedback Submitted!', 'Dismiss');
+      this.router.navigate(['/summary']);
     });
   }
 

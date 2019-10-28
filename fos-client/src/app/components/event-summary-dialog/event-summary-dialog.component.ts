@@ -66,7 +66,7 @@ import { Subscription } from "rxjs";
 export class EventSummaryDialogComponent implements OnInit {
   @ViewChild("personGroupView", { static: false }) userGroupTab: ElementRef;
   loading: boolean = true;
-
+  feedbackLoading = false;
   constructor(
     private router: Router,
     private restaurantService: RestaurantService,
@@ -553,13 +553,18 @@ export class EventSummaryDialogComponent implements OnInit {
   }
 
   sendEmailFeedback() {
+    this.feedbackLoading = true;
     this.feedbackService
       .sendFeedbackEmail(this.eventDetail.EventId)
       .then(result => {
-        this.toast("Feedback Email Sent!", "Dismiss");
+        this.toast('Feedback Email Sent!', 'Dismiss');
+        this.feedbackLoading = false;
       })
-      .catch(error => this.toast(error, "Dismiss"));
-    this.toast("Feedback Email Sent!", "Dismiss");
+      .catch(error => {
+        this.toast(error, 'Dismiss');
+        this.feedbackLoading = false;
+      });
+    // this.toast("Feedback Email Sent!", "Dismiss");
   }
   sendEmailReorder() {
     const info: UserReorder[] = [];

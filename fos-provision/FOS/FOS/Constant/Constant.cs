@@ -16,6 +16,5 @@ namespace FOS.Constant
         public const string contentTypeName = "contenttypeName";
         public const string listName = "list";
         public const string calendarViewName = "EventCalendarView";
-        public const string testabc = "";
     }
 }

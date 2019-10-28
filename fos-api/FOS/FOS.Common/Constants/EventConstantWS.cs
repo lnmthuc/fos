@@ -12,7 +12,7 @@ namespace FOS.CoreService.Constants
         public const string RemindEmailTemplate = @"App_Data\RemindEmailTemplate.json";
 
         public const string ReminderEventEmailTemplate = @"App_Data\RemindEventEmailTemplate.json";
-        public const string EventList = "Event List";
+        public const string EventList = "Event Sample";
         public const string EventStatus = "EventStatus";
         public const string EventTimeToClose = "EventTimeToClose";
         public const string EventTitle = "EventTitle";

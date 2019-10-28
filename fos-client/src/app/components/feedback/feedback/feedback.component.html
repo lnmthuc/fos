@@ -33,7 +33,7 @@
       <th mat-header-cell *matHeaderCellDef>Comment</th>
       <td mat-cell *matCellDef="let element">
         <mat-form-field>
-          <input [(ngModel)]="element.Comment" (input)="OnCommentChange($event, element.IdFood)" matInput placeholder="Leave a comment" />
+          <textarea [(ngModel)]="element.Comment" (input)="OnCommentChange($event, element.IdFood)" matInput placeholder="Leave a comment"></textarea>
         </mat-form-field>
       </td>
     </ng-container>

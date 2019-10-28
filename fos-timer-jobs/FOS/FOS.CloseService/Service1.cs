@@ -34,7 +34,7 @@ namespace FOS.CloseService
             CloseEvent();
 
             timer.Elapsed += new ElapsedEventHandler(OnElapsedTime);
-            timer.Interval = 60000; //number in milisecinds  
+            timer.Interval = 60000;
             timer.Enabled = true;
         }
 
@@ -43,9 +43,16 @@ namespace FOS.CloseService
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
-            timer.Enabled = false;
-            CloseEvent();
-            timer.Enabled = true;
+            try
+            {
+                timer.Enabled = false;
+                CloseEvent();
+                timer.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                WriteToFile("Service failed: " + ex.StackTrace + " - " + ex.Message);
+            }
         }
         public void WriteToFile(string Message)
         {
@@ -85,8 +92,8 @@ namespace FOS.CloseService
 
                     foreach (var element in events)
                     {
-                        var closeTimeString = element["EventTimeToClose"] != null
-                            ? element["EventTimeToClose"].ToString() : "";
+                        var closeTimeString = element[EventConstantWS.EventTimeToClose] != null
+                            ? element[EventConstantWS.EventTimeToClose].ToString() : "";
                         if (closeTimeString.Length > 0)
                         {
                             var closeTime = DateTime.Parse(closeTimeString).ToLocalTime();
@@ -100,7 +107,7 @@ namespace FOS.CloseService
                 }
                 catch (Exception e)
                 {
-                    WriteToFile("Exception: " + e.Message);
+                    //WriteToFile("Exception: " + e.Message);
                 }
             }
         }

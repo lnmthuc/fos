@@ -71,8 +71,6 @@ namespace FOS.ReminderService
         }
         private void OnElapsedTime(object source, ElapsedEventArgs e)
         {
-            WriteToFile("Service is recall at " + DateTime.Now);
-
             //get event on sharepoint
             try
             {
@@ -168,10 +166,9 @@ namespace FOS.ReminderService
                 {
                     DateTime reminderTime = DateTime.Parse(element[EventConstantWS.EventTimeToReminder].ToString()).ToLocalTime();
                     DateTime nowTime = DateTime.Now;
-
-                    TimeSpan span = nowTime.Subtract(reminderTime);
+                    int value = DateTime.Compare(reminderTime, nowTime);
+                    if (value <= 0)
                     {
-
                         var eventId = element[EventConstantWS.ID].ToString();
                         UpdateEventIsReminder(clientContext, eventId, "Yes");
 
@@ -179,7 +176,6 @@ namespace FOS.ReminderService
                         var closeTimeString = element[EventConstantWS.EventTimeToClose].ToString();
                         var closeTime = DateTime.Parse(closeTimeString).ToLocalTime();
                         var eventRestaurant = element[EventConstantWS.EventRestaurant].ToString();
-                        Console.WriteLine(eventTite);
 
                         List<Model.Domain.UserNotOrderEmail> userNotOrder = coreService.GetUserNotOrderEmail(eventId);
 
@@ -205,7 +201,7 @@ namespace FOS.ReminderService
         {
             try
             {
-                List members = context.Web.Lists.GetByTitle("Event List");
+                List members = context.Web.Lists.GetByTitle(EventConstantWS.EventList);
 
                 ListItem listItem = members.GetItemById(idEvent);
 

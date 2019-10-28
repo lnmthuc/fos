@@ -121,6 +121,7 @@ import { PermissionSettingDialogComponent } from './components/navigation/header
 import { PermissionSearchMutipeopleComponent } from './components/navigation/header/permission-setting-dialog/permission-search-mutipeople/permission-search-mutipeople.component';
 import { PermissonSettingUsetableComponent } from './components/navigation/header/permission-setting-dialog/permisson-setting-usetable/permisson-setting-usetable.component';
 import { DelegateSettingDialogComponent } from './components/navigation/header/delegate-setting-dialog/delegate-setting-dialog.component';
+import { EventDialogParticipantpickerComponent } from './components/event-dialog/event-dialog-participantpicker/event-dialog-participantpicker.component';
 
 @NgModule({
   declarations: [
@@ -185,6 +186,7 @@ import { DelegateSettingDialogComponent } from './components/navigation/header/d
     PermissionSearchMutipeopleComponent,
     PermissonSettingUsetableComponent,
     DelegateSettingDialogComponent,
+    EventDialogParticipantpickerComponent,
   ],
   // declarations: [
   //     AppComponent,

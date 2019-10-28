@@ -14,8 +14,8 @@ namespace FOS.CoreService.Constants
         public const string ReminderEventEmailTemplate = @"App_Data\RemindEventEmailTemplate.json";
         public const string EventList = "Event Sample";
         public const string EventStatus = "EventStatus";
-        public const string EventTimeToClose = "EventTimeToClose";
-        public const string EventTitle = "EventTitle";
+        public const string EventTimeToClose = "EventDate";
+        public const string EventTitle = "Title";
         public const string ID = "ID";
         public const string EventHost = "EventHost";
         public const string SharepointTimeFormat = "yyyy-MM-ddTHH:mm:ss";

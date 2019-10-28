@@ -1,51 +1,55 @@
-<mat-list>
-  <mat-list-item><h2>View event</h2></mat-list-item>
-  <mat-list-item>Event Title</mat-list-item>
-  <mat-list-item
-    ><h4>{{ eventTitle }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Restaurant</mat-list-item>
-  <mat-list-item
-    ><h4>{{ eventRestaurant }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Host</mat-list-item>
-  <mat-list-item
-    ><h4>{{ eventHost }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Maximum Budget</mat-list-item>
-  <mat-list-item
-    ><h4>
-      {{
-        maximumBudget != undefined
-          ? formatCurrency(maximumBudget) + currency
-          : ""
-      }}
-    </h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Event Time</mat-list-item>
-  <mat-list-item
-    ><h4>{{ EventTime }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Time To Close</mat-list-item>
-  <mat-list-item
-    ><h4>{{ dateTimeToClose }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
-  <mat-list-item>Time To Reminder</mat-list-item>
-  <mat-list-item
-    ><h4>{{ dateToReminder }}</h4></mat-list-item
-  >
-  <mat-divider></mat-divider>
 
-  <mat-list-item></mat-list-item>
-</mat-list>
-<section fxLayout="row wrap" fxLayoutAlign="center center">
-  <!-- <mat-card fxFlex="500px" fxFlex.xs="100%"> -->
+<div class="example-container">
+    <mat-list>
+        <mat-list-item><h2>View event</h2></mat-list-item>
+        <mat-list-item>Event Title</mat-list-item>
+        <mat-list-item
+          ><h4>{{ eventTitle }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Event Type</mat-list-item>
+        <mat-list-item
+          ><h4>{{ eventType }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Restaurant</mat-list-item>
+        <mat-list-item
+          ><h4>{{ eventRestaurant }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Host</mat-list-item>
+        <mat-list-item
+          ><h4>{{ eventHost }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Maximum Budget</mat-list-item>
+        <mat-list-item
+          ><h4>
+            {{
+              maximumBudget != undefined
+                ? formatCurrency(maximumBudget) + currency
+                : ""
+            }}
+          </h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Event Time</mat-list-item>
+        <mat-list-item
+          ><h4>{{ EventTime }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Time To Close</mat-list-item>
+        <mat-list-item
+          ><h4>{{ dateTimeToClose }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+        <mat-list-item>Time To Reminder</mat-list-item>
+        <mat-list-item
+          ><h4>{{ dateToReminder }}</h4></mat-list-item
+        >
+        <mat-divider></mat-divider>
+      </mat-list>
+
   <table mat-table [dataSource]="eventusers">
     <ng-container matColumnDef="avatar">
       <th mat-header-cell *matHeaderCellDef>Avatar</th>
@@ -81,12 +85,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
-  <!-- </form> -->
-  <!-- </mat-card> -->
-  <mat-card-actions align="right">
-    <!-- <button type="button" mat-flat-button color="warn" (click)="onCancel()">Create</button> -->
-    <button type="button" mat-stroked-button (click)="OnNoClick()">
-      Cancel
-    </button>
-  </mat-card-actions>
-</section>
+  <div mat-dialog-actions align="end">
+      <button type="button" mat-stroked-button (click)="OnNoClick()">
+          Cancel
+        </button>
+    </div>
+</div>

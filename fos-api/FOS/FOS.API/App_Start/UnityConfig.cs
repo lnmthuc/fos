@@ -78,6 +78,7 @@ namespace FOS.API
             container.RegisterType<Repositories.Repositories.ICustomGroupRepository, Repositories.Repositories.CustomGroupRepository>();
             container.RegisterType<Repositories.Repositories.IRecurrenceEventRepository, Repositories.Repositories.RecurrenceEventRepository>();
             container.RegisterType<Repositories.Repositories.IOrderRepository, Repositories.Repositories.OrderRepository>();
+            container.RegisterType<Repositories.Repositories.IDelegateHostRepository, Repositories.Repositories.DelegateHostRepository>();
             container.RegisterType<Repositories.Infrastructor.IDbFactory, Repositories.Infrastructor.DbFactory>();
             container.RegisterType<Repositories.Repositories.IFOSFoodServiceAPIsRepository, Repositories.Repositories.FOSFoodServiceAPIsRepository>(
                 new TransientLifetimeManager(),
@@ -133,6 +134,7 @@ namespace FOS.API
                 new InterceptionBehavior<LoggingInterceptor>());
             container.RegisterType<Services.CustomGroupService.ICustomGroupService, Services.CustomGroupService.CustomGroupService>();
             container.RegisterType<Services.ExcelService.IExcelService, Services.ExcelService.ExcelService>();
+            container.RegisterType<Services.DelegateHostService.IDelegateHostService, Services.DelegateHostService.DelegateHostService>();
 
             container.RegisterType<Services.FoodServices.IFoodService, Services.FoodServices.FoodService>(
                 new TransientLifetimeManager(),
@@ -182,6 +184,7 @@ namespace FOS.API
             container.RegisterType<Model.Mapping.IEventUserDtoMapper, Model.Mapping.EventUserDtoMapper>();
             container.RegisterType<Model.Mapping.IUserOrderDtoMapper, Model.Mapping.UserOrderDtoMapper>();
             container.RegisterType<Model.Mapping.IExcelModelDtoMapper, Model.Mapping.ExcelModelDtoMapper>();
+            container.RegisterType<Model.Mapping.IDelegateHostDtoMapper, Model.Mapping.DelegateHostDtoMapper>();
 
             container.RegisterType<Model.Mapping.IUserNotOrderEmailDtoMapper, Model.Mapping.UserNotOrderEmailDtoMapper>();
             container.RegisterType<Model.Mapping.IGroupDtoMapper, Model.Mapping.GroupDtoMapper>();

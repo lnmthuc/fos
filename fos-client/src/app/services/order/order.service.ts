@@ -8,6 +8,7 @@ import { UserNotOrderMailInfo } from './../../models/user-not-order-mail-info';
 import { UserNotOrder } from 'src/app/models/user-not-order';
 import { UserReorder } from 'src/app/models/user-reorder';
 import { OauthService } from '../oauth/oauth.service';
+import { User } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +23,11 @@ export class OrderService {
     // this.baseUrl = envService.getApiUrl() + "/api/order";
   }
 
-  getAllEvent(userId: string): Promise<Array<Event>> {
+  getAllEvent(user: User): Promise<Array<Event>> {
     return new Promise<Array<Event>>((resolve, reject) => {
       this.http
-        .get<ApiOperationResult<Array<Event>>>(
-          environment.apiUrl + 'api/splist/getallevent',
-          {
-            params: {
-              userId
-            }
-          }
+        .post<ApiOperationResult<Array<Event>>>(
+          environment.apiUrl + 'api/splist/getallevent', user
         )
         .toPromise()
         .then(result => {

@@ -33,14 +33,16 @@ namespace FOS.API.Controllers
         ISPListService _spListService;
         IEventService _eventService;
         private readonly IEventDtoMapper _eventDtoMapper;
+        private readonly IUserDtoMapper _userDtoMapper;
         ISPUserService _userService;
 
-        public SPListController(ISPListService spListService, IEventService eventService, IEventDtoMapper mapper, ISPUserService userService)
+        public SPListController(ISPListService spListService, IEventService eventService, IEventDtoMapper mapper, ISPUserService userService, IUserDtoMapper userDtoMapper)
         {
             _eventDtoMapper = mapper;
             _spListService = spListService;
             _eventService = eventService;
             _userService = userService;
+            _userDtoMapper = userDtoMapper;
         }
         //// GET api/splist/getlist/{list-id}
         //public async Task<HttpResponseMessage> GetList(string Id)
@@ -85,11 +87,16 @@ namespace FOS.API.Controllers
                 return ApiUtil<string>.CreateFailResult(e.ToString());
             }
         }
-        public ApiResponse<IEnumerable<Model.Dto.Event>> GetAllEvent(string userId)
+        [HttpPost]
+        [Route("GetAllEvent")]
+        public ApiResponse<IEnumerable<Model.Dto.Event>> GetAllEvent([FromBody]Model.Dto.User user)
         {
             try
             {
-                var allEvent = _eventService.GetAllEvent(userId);
+                Model.Domain.User domainUser = _userDtoMapper.ToDomain(user);
+                bool isAdminRole = _userService.SiteGroupCheckMemberExists(domainUser);
+
+                var allEvent = _eventService.GetAllEvent(domainUser.Id, isAdminRole);
                 var result = _eventDtoMapper.ListDomainToDto(allEvent);
                 return ApiUtil<IEnumerable<Model.Dto.Event>>.CreateSuccessfulResult(result);
             }

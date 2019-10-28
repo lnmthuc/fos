@@ -1,0 +1,58 @@
+<!-- <div class="example-full-width">
+<mat-chip-list #chipList>
+    <mat-chip
+      *ngFor="let user of selectedUsers"
+      [selectable]="true"
+      [removable]="true"
+      >
+      {{user.DisplayName}}
+      <mat-icon matChipRemove *ngIf="true" (click)="removeUser(user)">cancel</mat-icon>
+    </mat-chip>
+  </mat-chip-list>
+</div> -->
+<mat-form-field class="example-full-width">
+  <div class="inline">
+    <input
+      matInput
+      type="text"
+      placeholder="Select Users"
+      aria-label="Select Users"
+      [matAutocomplete]="auto"
+      [formControl]="userControl"
+      class="inline"
+    />
+    <mat-spinner diameter="15" *ngIf="loading" class="inline"></mat-spinner>
+  </div>
+</mat-form-field>
+
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option *ngFor="let user of filteredUsers" [value]="user">
+    <!-- <div (click)="optionClicked($event, user)">
+      <mat-checkbox [checked]="user.IsSelected">
+        {{ user.Mail }}
+      </mat-checkbox>
+    </div> -->
+    <div class="format-avatar" (click)="optionClicked($event, user)">
+      <img
+        id="avatar"
+        class="make-circle-avatar"
+        src="{{ apiUrl }}api/SPUser/GetAvatar?Id={{ user.Id }}&avatarName={{
+          user.DisplayName
+        }}"
+      />
+      <div class="format-avatar-right">
+        <span>{{ user.DisplayName }}</span>
+        <small>email: {{ user.Mail }}</small>
+      </div>
+    </div>
+  </mat-option>
+</mat-autocomplete>
+
+<br /><br />
+<!-- <label>Selected Users:</label>
+<mat-list dense>
+  <mat-list-item *ngIf="selectedUsers?.length === 0">(None)</mat-list-item>
+  <mat-list-item *ngFor="let user of selectedUsers">
+    {{ user.DisplayName }}
+  </mat-list-item>
+</mat-list> -->

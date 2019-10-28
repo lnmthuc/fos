@@ -15,5 +15,6 @@
         public Id: string = null;   
         public Mail: string = null;   
         public DisplayName: string = null;
+        public IsSelected: boolean = false;
     }
          

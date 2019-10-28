@@ -13,6 +13,7 @@ using System.Dynamic;
 using FOS.Model.Domain;
 using FOS.Model.Mapping;
 using FOS.Common.Constants;
+using FOS.Services.SPUserService;
 
 namespace FOS.Services.EventServices
 {
@@ -27,7 +28,7 @@ namespace FOS.Services.EventServices
             _sharepointContextProvider = sharepointContextProvider;
             _eventDtoMapper = eventDtoMapper;
         }
-        public IEnumerable<Event> GetAllEvent(string userId)
+        public IEnumerable<Event> GetAllEvent(string userId, bool isAdminRole)
         {
             using (ClientContext clientContext = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "sites/FOS/"))
             {
@@ -46,7 +47,7 @@ namespace FOS.Services.EventServices
                     var eventModel = _eventDtoMapper.ListItemToEventModel(element);
 
                     IsMyEvent(eventModel, userId);
-                    SetListAction(eventModel, userId);
+                    SetListAction(eventModel, userId, isAdminRole);
 
                     listEvent.Add(eventModel);
                 }
@@ -60,9 +61,8 @@ namespace FOS.Services.EventServices
 
             eventModel.IsMyEvent = isParticipant || isHost || eventModel.CreatedBy == userId;
         }
-        private void SetListAction(Event eventModel, string userId)
+        private void SetListAction(Event eventModel, string userId, bool isAdminRole)
         {
-
             var isParticipant = eventModel.EventParticipantsJson.Contains(userId);
             var isHost = eventModel.HostId == userId;
 
@@ -70,14 +70,14 @@ namespace FOS.Services.EventServices
             {
                 CanViewEvent = true,
                 CanCloneEvent = true,
-                CanEditEvent = isHost && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
+                CanEditEvent = (isHost || isAdminRole) && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
                 CanCloseEvent = isHost && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
                 CanSendRemind = isHost && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
                 CanMakeOrder =
                             (isParticipant || eventModel.EventType == EventType.Open)
                             && (eventModel.Status == EventStatus.Opened || eventModel.Status == EventStatus.Reopened),
                 CanViewOrder = eventModel.Status == EventStatus.Closed && isParticipant,
-                CanViewEventSummary = isHost || isParticipant,
+                CanViewEventSummary = (isHost || isAdminRole) || isParticipant,
                 CanShareEventLink = eventModel.EventType == EventType.Open ? true : false
             };
         }

@@ -26,7 +26,7 @@
     Time to close:
     {{ toStandardDate(event.CloseTime) }}
   </h4>
-  <h4>Event date: {{ toStandardDate(event.EventTime) }}</h4>
+  <h4>Event date: {{ toStandardDate(event.EventDate) }}</h4>
 </div>
 
 <div class="restaurants ">
@@ -118,6 +118,7 @@
               matInput
               (blur)="onBlurMethodComment($event.target.value, element)"
               type="text"
+              autocomplete="off"
               [value]="element.Value['Comment']"
             />
           </mat-form-field>

@@ -176,5 +176,65 @@ namespace FOS.API.Controllers
                 return ApiUtil<List<Model.Dto.User>>.CreateFailResult(e.ToString());
             }
         }
+
+        [HttpGet]
+        [Route("SiteGroupListMemers")]
+        public async Task<ApiResponse<List<Model.Dto.User>>> SiteGroupListMemers(string groupName)
+        {
+            try
+            {
+                var group = _sPUserService.SiteGroupListMembers(groupName);
+                return ApiUtil<List<Model.Dto.User>>.CreateSuccessfulResult(group.Select(u => _userDtoMapper.ToDto(u)).ToList());
+            }
+            catch (Exception e)
+            {
+                return ApiUtil<List<Model.Dto.User>>.CreateFailResult(e.ToString());
+            }
+        }
+        [HttpPost]
+        [Route("SiteGroupAddMembers")]
+        public async Task<ApiResponse> SiteGroupAddMembers([FromBody]Model.Dto.User User)
+        {
+            try
+            {
+                Model.Domain.User addUser = _userDtoMapper.ToDomain(User);
+                await _sPUserService.SiteGroupAddMembers(addUser);
+                return ApiUtil.CreateSuccessfulResult();
+            }
+            catch (Exception e)
+            {
+                return ApiUtil.CreateFailResult(e.ToString());
+            }
+        }
+        [HttpPost]
+        [Route("SiteGroupCheckAdmin")]
+        public async Task<ApiResponse<bool>> SiteGroupCheckAdmin([FromBody]Model.Dto.User User)
+        {
+            try
+            {
+                Model.Domain.User addUser = _userDtoMapper.ToDomain(User);
+                bool check =  _sPUserService.SiteGroupCheckMemberExists(addUser);
+                return ApiUtil<bool>.CreateSuccessfulResult(check);
+            }
+            catch (Exception e)
+            {
+                return ApiUtil<bool>.CreateFailResult(e.ToString());
+            }
+        }
+        [HttpPost]
+        [Route("SiteGroupRemoveMembers")]
+        public async Task<ApiResponse> SiteGroupRemoveMembers([FromBody]Model.Dto.User User)
+        {
+            try
+            {
+                Model.Domain.User removeUser = _userDtoMapper.ToDomain(User);
+                await _sPUserService.SiteGroupRemoveMembers(removeUser);
+                return ApiUtil.CreateSuccessfulResult();
+            }
+            catch (Exception e)
+            {
+                return ApiUtil.CreateFailResult(e.ToString());
+            }
+        }
     }
 }

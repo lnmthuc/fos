@@ -147,7 +147,7 @@ namespace FOS.Services.SummaryService
         }
         public IEnumerable<Model.Domain.RestaurantSummary> GetRestaurantSummary()
         {
-            var allEvent = _eventService.GetAllEvent("");
+            var allEvent = _eventService.GetAllEvent("",false);
             var allEventWithoutError = allEvent.Where(e => e.Status != EventStatus.Error).ToList();
             var allSummary = new List<Model.Domain.RestaurantSummary>();
 
@@ -264,7 +264,7 @@ namespace FOS.Services.SummaryService
         {
             if(orders.Count() > 0)
             {
-                var allEvent = _eventService.GetAllEvent("");
+                var allEvent = _eventService.GetAllEvent("",false);
                 var errorEvent = allEvent.Where(e => e.Status == EventStatus.Error).Select(e => e.EventId).ToList();
 
                 return orders.Where(o => !errorEvent.Contains(o.IdEvent)).ToList();

@@ -621,18 +621,24 @@ export class EventSummaryDialogComponent implements OnInit {
   }
   isHost(event: Event) {
     this.userService.getCurrentUser().then(user => {
-      this.isHostUser = user.Id == event.HostId;
-      if (this.isHostUser) {
-        this.personGroupViewDisplayedColumns = [
-          "user",
-          "food",
-          "price",
-          "pay-extra",
-          "comment",
-          "editMakeOrder"
-        ];
+      this.userService.SiteGroupCheckAdmin(user).toPromise().then(isAdmin => {
+        const isAdminRole: boolean = isAdmin.Data;
+        this.isHostUser = user.Id == event.HostId;
+        if ( isAdminRole) {
+          this.isHostUser = true;
+        }
+        if (this.isHostUser || isAdminRole) {
+            this.personGroupViewDisplayedColumns = [
+              "user",
+              "food",
+              "price",
+              "pay-extra",
+              "comment",
+              "editMakeOrder"
+            ];
       }
-      this.loading = false;
+        this.loading = false;
+      });
     });
   }
 

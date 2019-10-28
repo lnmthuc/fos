@@ -23,5 +23,6 @@ namespace FOS.Common.Constants
         public const string FileXlsxDirectory = @"C:\FOS\Summary.xlsx";
         public const string FileCsvDirectory = @"C:\FOS\Summary.csv";
         public const string RootDirectory = @"C:\FOS\";
+        public const string AdminGroupName = "FOS Owners";
     }
 }

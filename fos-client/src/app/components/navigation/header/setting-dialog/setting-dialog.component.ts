@@ -8,6 +8,7 @@ import { RecurrenceEvent } from "src/app/models/recurrence-event";
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { DataRoutingService } from 'src/app/data-routing.service';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: "app-setting-dialog",
@@ -25,6 +26,8 @@ export class SettingDialogComponent implements OnInit {
   endTime: string;
   appTheme: string;
   nameRepeatType: string[] = [];
+  isAdminRole = false;
+  loading = true;
   private getNavTitleSubscription: Subscription;
 
   constructor(
@@ -33,11 +36,14 @@ export class SettingDialogComponent implements OnInit {
     private recurrenceEventService: RecurrenceEventService,
     private fb: FormBuilder,
     overlayContainer: OverlayContainer,
-    private dataRouting: DataRoutingService
+    private dataRouting: DataRoutingService,
+    private userService: UserService
   ) {
        this.getNavTitleSubscription = this.dataRouting.getNavTitle()
     .subscribe((appTheme: string) => this.appTheme = appTheme);
-    overlayContainer.getContainerElement().classList.add("app-"+this.appTheme+"-theme");
+       overlayContainer.getContainerElement().classList.add("app-"+this.appTheme+"-theme");
+       this.loading = true;
+       this.checkAdminRole();
   }
 
   onNoClick(): void {
@@ -144,5 +150,14 @@ export class SettingDialogComponent implements OnInit {
       );
     }
     this.dialogRef.close();
+  }
+  checkAdminRole() {
+    const self = this;
+    this.userService.getCurrentUser().then( u => {
+      this.userService.SiteGroupCheckAdmin(u).toPromise().then(rs => {
+        self.isAdminRole = rs.Data;
+        self.loading = false;
+      });
+    });
   }
 }

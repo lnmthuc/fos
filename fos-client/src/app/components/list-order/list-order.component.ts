@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { MatSelectChange } from '@angular/material/select';
 import { Overlay } from '@angular/cdk/overlay';
+import { EventDialogViewComponent } from '../event-dialog-view/event-dialog-view.component';
 
 moment.locale('vi');
 
@@ -36,6 +37,7 @@ export class ListOrderComponent implements OnInit, OnChanges {
   isLoading = true;
   currency = 'đ';
   userId: string;
+  User: User;
   allOrder: Event[];
   myOrder: Event[];
   myOrderCategories = [];
@@ -68,6 +70,7 @@ export class ListOrderComponent implements OnInit, OnChanges {
     this.dataSource.paginator = this.paginator;
     this.userService.getCurrentUser().then((response: User) => {
       this.userId = response.Id;
+      this.User = response;
       this.getAllEvent();
     });
   }
@@ -96,7 +99,8 @@ export class ListOrderComponent implements OnInit, OnChanges {
   }
 
   getAllEvent() {
-    this.orderService.getAllEvent(this.userId).then(response => {
+
+    this.orderService.getAllEvent(this.User).then(response => {
       this.allOrder = response;
       if (response !== null && response.length > 0) {
         this.myOrder = this.allOrder.filter(item => {
@@ -243,5 +247,16 @@ export class ListOrderComponent implements OnInit, OnChanges {
     return Number(value)
       .toFixed(0)
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+  }
+  viewEvent(element: Event): void {
+    const dialogRef = this.dialog.open(EventDialogViewComponent, {
+      maxHeight: '90vh',
+      minWidth: '80vw',
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+    });
   }
 }

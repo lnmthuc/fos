@@ -166,6 +166,8 @@
   <ItemGroup>
     <Compile Include="CustomGroupService\CustomGroupService.cs" />
     <Compile Include="CustomGroupService\ICustomGroupService.cs" />
+    <Compile Include="DelegateHostService\DelegateHostService.cs" />
+    <Compile Include="DelegateHostService\IDelegateHostService.cs" />
     <Compile Include="DeliveryServices\DeliveryService.cs" />
     <Compile Include="DeliveryServices\IDeliveryService.cs" />
     <Compile Include="EventPromotionServices\EventPromotionService.cs" />

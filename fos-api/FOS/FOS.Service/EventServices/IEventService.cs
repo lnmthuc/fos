@@ -11,7 +11,7 @@ namespace FOS.Services.EventServices
 {
     public interface IEventService
     {
-        IEnumerable<Model.Domain.Event> GetAllEvent(string userId);
+        IEnumerable<Model.Domain.Event> GetAllEvent(string userId, bool isAdminRole);
         Model.Domain.Event GetEvent(int id);
         bool ValidateEventInfo(Model.Domain.Event eventInfo);
     }

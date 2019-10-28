@@ -54,8 +54,8 @@ export class HeaderComponent implements OnInit {
     const dialogRef = this.dialog.open(SettingDialogComponent, {
       scrollStrategy: this.overlay.scrollStrategies.noop(),
       autoFocus: false,
-      maxHeight: '98vh',
-      maxWidth: '80%',
+      maxHeight: '80vh',
+      minWidth: '80vh',
       data: this.user
     });
 

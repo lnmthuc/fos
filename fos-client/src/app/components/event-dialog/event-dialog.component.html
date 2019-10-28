@@ -35,7 +35,7 @@
           formControlName="EventType"
         >
           <mat-radio-button class="radio-button" value="Open">
-            Free For All
+            Free To Join
           </mat-radio-button>
           <mat-radio-button class="radio-button" value="Close">
             Invited Only
@@ -215,7 +215,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
 
-        <mat-card-actions align="right">
+        <div mat-dialog-actions align="end">
           <button
             mat-flat-button
             color="primary"
@@ -227,7 +227,7 @@
           <button type="button" mat-stroked-button (click)="OnNoClick()">
             Cancel
           </button>
-        </mat-card-actions>
+        </div>
       </div>
     </form>
   </mat-card>

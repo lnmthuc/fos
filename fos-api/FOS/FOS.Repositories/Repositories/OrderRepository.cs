@@ -159,7 +159,7 @@ namespace FOS.Repositories.Repositories
         public List<Model.Domain.UserNotOrderEmail> GetUserAlreadyOrderEmail(string eventId)
         {
             var orders = _context.Orders.Where(order =>
-            order.IdEvent == eventId && order.FoodDetail.Length != 0).ToList();
+            order.IdEvent == eventId && order.OrderStatus == EventEmail.Ordered).ToList();
 
             var result = new List<Model.Domain.UserNotOrderEmail>();
             foreach (var order in orders)

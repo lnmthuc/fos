@@ -8,12 +8,12 @@ namespace FOS.Common.Constants
 {
     public class EventFieldName
     {
-        public const string EventList = "Event List";
+        public const string EventList = "Event Sample";
         public const string EventHost = "EventHost";
-        public const string EventTimeToClose = "EventTimeToClose";
+        public const string EventTimeToClose = "EventDate";
         public const string EventTimeToReminder = "EventTimeToReminder";
-        public const string EventDate = "EventDate";
-        public const string EventTitle = "EventTitle";
+        public const string EventDate = "EndDate"; 
+        public const string EventTitle = "Title";
         public const string EventRestaurant = "EventRestaurant";
         public const string EventRestaurantId = "EventRestaurantId";
         public const string EventCategory = "EventCategory";

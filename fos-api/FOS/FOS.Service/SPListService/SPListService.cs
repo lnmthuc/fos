@@ -62,7 +62,6 @@ namespace FOS.Services.SPListService
                     Microsoft.SharePoint.Client.ListItem listItem = members.AddItem(new ListItemCreationInformation());
                     listItem[EventFieldName.EventHost] = userValue;
                     listItem[EventFieldName.EventTitle] = eventData.Name;
-                    listItem[EventFieldName.EventId] = 1;
                     listItem[EventFieldName.EventRestaurant] = eventData.Restaurant;
                     listItem[EventFieldName.EventMaximumBudget] = eventData.MaximumBudget;
                     listItem[EventFieldName.EventTimeToClose] = eventData.CloseTime;
@@ -128,7 +127,6 @@ namespace FOS.Services.SPListService
                     ListItem listItem = members.GetItemById(id);
                     listItem[EventFieldName.EventHost] = userValue;
                     listItem[EventFieldName.EventTitle] = eventData.Name;
-                    listItem[EventFieldName.EventId] = 1;
                     listItem[EventFieldName.EventRestaurant] = eventData.Restaurant;
                     listItem[EventFieldName.EventMaximumBudget] = eventData.MaximumBudget;
                     listItem[EventFieldName.EventTimeToClose] = eventData.CloseTime;
@@ -204,11 +202,11 @@ namespace FOS.Services.SPListService
                 using (ClientContext context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
                 {
 
-                    List members = context.Web.Lists.GetByTitle("Event List");
+                    List members = context.Web.Lists.GetByTitle(EventFieldName.EventList);
 
                     ListItem listItem = members.GetItemById(idEvent);
 
-                    listItem["EventIsReminder"] = isReminder;
+                    listItem[EventFieldName.EventIsReminder] = isReminder;
                     listItem.Update();
                     context.ExecuteQuery();
                 }
@@ -225,13 +223,13 @@ namespace FOS.Services.SPListService
             {
                 using (ClientContext context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
                 {
-                    List members = context.Web.Lists.GetByTitle("Event List");
+                    List members = context.Web.Lists.GetByTitle(EventFieldName.EventList);
 
                     ListItem listItem = members.GetItemById(id);
-                    context.Load(listItem, li => li["EventStatus"]);
+                    context.Load(listItem, li => li[EventFieldName.EventStatus]);
                     context.ExecuteQuery();
 
-                    listItem["EventStatus"] = status;
+                    listItem[EventFieldName.EventStatus] = status;
 
                     listItem.Update();
                     context.ExecuteQuery();
@@ -248,12 +246,12 @@ namespace FOS.Services.SPListService
             {
                 using (ClientContext context = _sharepointContextProvider.GetSharepointContextFromUrl(APIResource.SHAREPOINT_CONTEXT + "/sites/FOS/"))
                 {
-                    List members = context.Web.Lists.GetByTitle("Event List");
+                    List members = context.Web.Lists.GetByTitle(EventFieldName.EventList);
 
                     ListItem listItem = members.GetItemById(id);
-                    context.Load(listItem, li => li["EventTimeToClose"]);
+                    context.Load(listItem, li => li[EventFieldName.EventTimeToClose]);
                     context.ExecuteQuery();
-                    listItem["EventTimeToClose"] = dateTime.ToLocalTime();
+                    listItem[EventFieldName.EventTimeToClose] = dateTime.ToLocalTime();
 
                     listItem.Update();
                     context.ExecuteQuery();

@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataModel\CustomGroup.cs" />
+    <Compile Include="DataModel\DelegateHost.cs" />
     <Compile Include="DataModel\EventPromotion.cs" />
     <Compile Include="DataModel\ExternalServiceAPI.cs" />
     <Compile Include="DataModel\FavoriteRestaurant.cs" />
@@ -71,13 +72,19 @@
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\RepositoryBaseFactory.cs" />
+    <Compile Include="Mapping\DelegateHostMapper.cs" />
     <Compile Include="Mapping\EventPromotionMapper.cs" />
     <Compile Include="Mapping\CustomGroupMapper.cs" />
     <Compile Include="Mapping\GraphUserMapper.cs" />
     <Compile Include="Mapping\FeedbackMapper.cs" />
     <Compile Include="Mapping\OrderMapper.cs" />
     <Compile Include="Mapping\RecurrenceEventMapper.cs" />
+    <Compile Include="Migrations\201910240721375_init.cs" />
+    <Compile Include="Migrations\201910240721375_init.Designer.cs">
+      <DependentUpon>201910240721375_init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Repositories\DelegateHostRepository.cs" />
     <Compile Include="Repositories\EventPromotionRepository.cs" />
     <Compile Include="Repositories\CustomGroupRepository.cs" />
     <Compile Include="Repositories\FeedbackRepository.cs" />
@@ -121,6 +128,11 @@
       <Project>{8252d347-1bad-4276-a6e3-180fb9f0a3db}</Project>
       <Name>FOS.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201910240721375_init.resx">
+      <DependentUpon>201910240721375_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
